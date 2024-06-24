@@ -8,9 +8,8 @@
     'summary': 'Hospital management system',
     'description': 'Hospital management system',
     'depends': ['mail'],
-    'data': [
-
-    ],
+    'data':[],
+    'demo':[],
     'installable': True,
     'auto-install': False,
     'application': True,
