@@ -9,6 +9,7 @@
     'depends': [],
     'data': [
         'views/menu.xml',
+        'views/patient_view.xml',
     ],
     'demo': [],
     'auto-install': False,
