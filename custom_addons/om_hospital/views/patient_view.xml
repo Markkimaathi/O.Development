@@ -32,6 +32,13 @@
                         </group>
                     </group>
                 </sheet>
+
+                <!--chatter-->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                </div>
             </form>
         </field>
     </record>
@@ -50,7 +57,7 @@
                 <filter name="filter_female" string="Female" domain="[('gender', '=', 'female')]"/>
                 <separator/>
                 <filter name="filter_kids" string="kids" domain="[('age', '&lt;=', 5)]"/>
-                 <separator/>
+                <separator/>
                 <filter name="filter_archived" string="Archived" domain="[('active', '=', False)]"/>
                 <group expand="0" string="Group By">
                     <filter string="Gender" name="group_by_gender" context="{'group_by': 'gender'}"/>
