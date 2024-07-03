@@ -7,6 +7,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="name" string="Patient Name"/>
+                <field name="ref"/>
                 <field name="age"/>
                 <field name="gender"/>
             </tree>
@@ -25,11 +26,25 @@
                             <field name="age"/>
                         </group>
                         <group>
+                            <field name="ref"/>
                             <field name="gender"/>
                         </group>
                     </group>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="view_hospital_patient_search" model="ir.ui.view">
+        <field name="name">hospital.patient.search</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Patient Name" filter_domain="['|', ('name', 'ilike', self), ('ref', 'ilike', self)]"/>
+                <field name="ref"/>
+                <field name="age"/>
+                <field name="gender"/>
+            </search>
         </field>
     </record>
 
