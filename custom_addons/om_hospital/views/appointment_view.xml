@@ -10,7 +10,7 @@
         </field>
     </record>
 
-    <record id="view_hospital_patient_form" model="ir.ui.view">
+    <record id="view_hospital_appointment_form" model="ir.ui.view">
         <field name="name">hospital.appointment.form</field>
         <field name="model">hospital.appointment</field>
         <field name="arch" type="xml">
@@ -18,6 +18,7 @@
                 <sheet>
                     <group>
                         <group>
+                            <field name="patient_id"/>
                         </group>
                         <group>
                         </group>
@@ -32,7 +33,7 @@
         </field>
     </record>
 
-    <record id="view_hospital_patient_search" model="ir.ui.view">
+    <record id="view_hospital_appointment_search" model="ir.ui.view">
         <field name="name">hospital.appointment.search</field>
         <field name="model">hospital.appointment</field>
         <field name="arch" type="xml">
