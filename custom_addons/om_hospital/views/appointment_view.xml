@@ -6,6 +6,9 @@
         <field name="model">hospital.appointment</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="patient_id"/>
+                <field name="appointment_time"/>
+                <field name="booking_date"/>
             </tree>
         </field>
     </record>
@@ -19,6 +22,8 @@
                     <group>
                         <group>
                             <field name="patient_id"/>
+                            <field name="appointment_time"/>
+                            <field name="booking_date"/>
                         </group>
                         <group>
                         </group>
@@ -58,6 +63,6 @@
     <menuitem id="menu_appointment"
               name="Appointment"
               action="action_hospital_appointment"
-              parent="menu_patient_master"
+              parent="menu_appointment_master"
               sequence="10"/>
 </odoo>
