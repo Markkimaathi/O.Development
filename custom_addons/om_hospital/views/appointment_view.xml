@@ -22,10 +22,10 @@
                     <group>
                         <group>
                             <field name="patient_id"/>
-                            <field name="appointment_time"/>
                             <field name="booking_date"/>
                         </group>
                         <group>
+                            <field name="appointment_time"/>
                         </group>
                     </group>
                 </sheet>
