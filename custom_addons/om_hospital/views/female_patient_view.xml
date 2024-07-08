@@ -11,7 +11,7 @@
         <field name="domain">[('gender', '=', 'female')]</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Create your First Female Patient !
+                Create your first Female Patient !
             </p>
         </field>
     </record>
