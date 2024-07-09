@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 
+
 class HospitalAppointment(models.Model):
     _name = 'hospital.appointment'
     _inherit = ['mail.thread', 'mail.activity.mixin']
@@ -17,7 +18,7 @@ class HospitalAppointment(models.Model):
         ('1', 'Low'),
         ('2', 'High'),
         ('3', 'Very High')], string="Priority")
-    state =fields.Selection([
+    state = fields.Selection([
         ('draft', 'Draft'),
         ('in_consultation', 'In Consultation'),
         ('done', 'Done'),
@@ -29,6 +30,9 @@ class HospitalAppointment(models.Model):
 
     def action_test(self):
         print("Button Click !!!!!!!!!!")
-
-
-
+        return {
+            'effect': {
+                'message': 'Click successful',
+                'type': 'rainbow_man',
+            }
+        }
