@@ -27,5 +27,8 @@ class HospitalAppointment(models.Model):
     def onchange_patient_id(self):
         self.ref = self.patient_id.ref
 
+    def action_test(self):
+        print("Button Click !!!!!!!!!!")
+
 
 
