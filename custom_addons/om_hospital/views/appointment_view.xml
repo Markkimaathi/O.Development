@@ -19,6 +19,11 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <div class="oe_tite">
+                        <h1>
+                            <field name="priority" widget="priority" class="nr-3"/>
+                        </h1>
+                    </div>
                     <group>
                         <group>
                             <field name="patient_id"/>
@@ -34,46 +39,46 @@
                     <notebook>
                         <page string="Prescription" name="prescription">
                             <field name="prescription" placeholder="Enter your prescription"/>
-                    </page>
+                        </page>
                         <page string="Pharmacy" name="pharmacy">
                         </page>
-                </notebook>
+                    </notebook>
 
-            </sheet>
-            <div class="oe_chatter">
-                <field name="message_follower_ids"/>
-                <field name="activity_ids"/>
-                <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
-            </div>
-        </form>
-    </field>
-</record>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                </div>
+            </form>
+        </field>
+    </record>
 
-<record id="view_hospital_appointment_search" model="ir.ui.view">
-<field name="name">hospital.appointment.search</field>
-<field name="model">hospital.appointment</field>
-<field name="arch" type="xml">
-    <search>
-    </search>
-</field>
-</record>
+    <record id="view_hospital_appointment_search" model="ir.ui.view">
+        <field name="name">hospital.appointment.search</field>
+        <field name="model">hospital.appointment</field>
+        <field name="arch" type="xml">
+            <search>
+            </search>
+        </field>
+    </record>
 
-<record id="action_hospital_appointment" model="ir.actions.act_window">
-<field name="name">Appointment</field>
-<field name="type">ir.actions.act_window</field>
-<field name="res_model">hospital.appointment</field>
-<field name="view_mode">tree,form</field>
-<field name="context">{}</field>
-<field name="help" type="html">
-    <p class="o_view_nocontent_smiling_face">
-        Create your first appointment !
-    </p>
-</field>
-</record>
+    <record id="action_hospital_appointment" model="ir.actions.act_window">
+        <field name="name">Appointment</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hospital.appointment</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first appointment !
+            </p>
+        </field>
+    </record>
 
-<menuitem id="menu_appointment"
-          name="Appointment"
-          action="action_hospital_appointment"
-          parent="menu_appointment_master"
-          sequence="10"/>
-        </odoo>
+    <menuitem id="menu_appointment"
+              name="Appointment"
+              action="action_hospital_appointment"
+              parent="menu_appointment_master"
+              sequence="10"/>
+</odoo>
