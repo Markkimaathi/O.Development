@@ -37,8 +37,11 @@
                         </group>
                         <group>
                             <field name="appointment_time"/>
-                            <button name="action_test" string="Object Button" type="object"  class="oe_highlight"/>
+                            <button name="action_test" string="Object Button" type="object"
+                                    confirm="Are you sure you want to execute ?"
+                                    class="oe_highlight"/>
                             <button name="%(om_hospital.action_hospital_patient)d" string="Action Button"
+                                    confirm="Are you sure you want to open patient action ?"
                                     type="action" class="oe_highlight"/>
                         </group>
                     </group>
