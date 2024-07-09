@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+<!--    decoration-success &#45;&#45; green-->
+<!--    decoration-info &#45;&#45; red-->
+<!--    decoration-danger &#45;&#45; orange-->
+<!--    decoration-warning &#45;&#45; light blue-->
+<!--    decoration-mutes-->
+
     <record id="view_hospital_patient_tree" model="ir.ui.view">
         <field name="name">hospital.appointment.tree</field>
         <field name="model">hospital.appointment</field>
@@ -9,6 +15,12 @@
                 <field name="patient_id"/>
                 <field name="appointment_time"/>
                 <field name="booking_date"/>
+                <field name="state"
+                       decoration-success="state == 'done'"
+                       decoration-info="state == 'draft'"
+                       decoration-danger="state == 'cancel'"
+                       decoration-warning="state == 'in_consultation'"
+                       widget="badge"/>
             </tree>
         </field>
     </record>
