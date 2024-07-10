@@ -35,11 +35,15 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_in_consultation" string="In Consultation" class="oe_highlight" type="object"
+                    <button name="action_in_consultation" string="In Consultation" class="oe_highlight"
+                            data-hotkeys="x"
+                            type="object"
                             condition="state == 'draft'"/>
-                    <button name="action_done" string="Mark As Done" class="oe_highlight" type="object"
+                    <button name="action_done" string="Mark As Done" class="oe_highlight"
+                            data-hotkeys="v"
+                            type="object"
                             condition="state == 'in_consultation'"/>
-                    <button name="action_cancel" string="Cancel" type="object"
+                    <button name="action_cancel" string="Cancel" data-hotkeys="z" type="object"
                             condition="state in ('draft', 'in_consultation')"/>
                     <button name="action_draft" string="Reset To Draft" type="object"
                             condition="state in ('in_consultation')"/>
