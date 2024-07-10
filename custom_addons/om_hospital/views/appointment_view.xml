@@ -35,7 +35,16 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <field name="state" widget="statusbar" nolabel="1" options="{'clickable': '1'}"
+                    <button name="action_in_consultation" string="In Consultation" class="oe_highlight" type="object"
+                            condition="state == 'draft'"/>
+                    <button name="action_done" string="Mark As Done" class="oe_highlight" type="object"
+                            condition="state == 'in_consultation'"/>
+                    <button name="action_cancel" string="Cancel" type="object"
+                            condition="state in ('draft', 'in_consultation')"/>
+                    <button name="action_draft" string="Reset To Draft" type="object"
+                            condition="state in ('in_consultation')"/>
+                    <!--options="{'clickable': '1'}"-->
+                    <field name="state" widget="statusbar" nolabel="1"
                            statusbar_visible="draft,in_consultation,done"/>
                 </header>
                 <sheet>
@@ -68,7 +77,7 @@
                     <notebook>
                         <page string="Prescription" name="prescription">
                             <field name="prescription" placeholder="Enter your prescription"
-                            options="{'collaborative':true, 'resizable':true}"/>
+                                   options="{'collaborative':true, 'resizable':true}"/>
                         </page>
                         <page string="Pharmacy" name="pharmacy">
                         </page>
