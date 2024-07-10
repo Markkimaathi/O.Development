@@ -14,8 +14,10 @@
             <tree decoration-success="state == 'done'" decoration-danger="state == 'cancel'"
                   decoration-warning="state == 'in_consultation'" decoration-info="state == 'draft'">
                 <field name="patient_id"/>
+                <field name="ref" optional="show"/>
+                <field name="gender" optional="hide"/>
                 <field name="appointment_time"/>
-                <field name="booking_date"/>
+                <field name="booking_date" optional="show"/>
                 <field name="activity_ids" widget="list_activity"/>
                 <field name="state"
                        decoration-success="state == 'done'"
