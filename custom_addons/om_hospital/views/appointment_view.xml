@@ -84,6 +84,20 @@
                                    options="{'collaborative':true, 'resizable':true}"/>
                         </page>
                         <page string="Pharmacy" name="pharmacy">
+                            <field name="pharmacy_line_ids">
+                            <tree editable="bottom">
+                                <field name="product_id"/>
+                                <field name="price_unit"/>
+                                <field name="qty"/>
+                            </tree>
+                            <form>
+                                 <group>
+                                    <field name="product_id"/>
+                                    <field name="price_unit"/>
+                                    <field name="qty"/>
+                                </group>
+                            </form>
+                            </field>
                         </page>
                     </notebook>
 
