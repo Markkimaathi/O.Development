@@ -66,6 +66,7 @@
                             <field name="booking_date" help="Date of booking" default_focus="1"/>
                         </group>
                         <group>
+                            <field name="hide_sales_price"/>
                             <field name="appointment_time"/>
                             <button name="action_test" string="Object Button" type="object"
                                     help="A message will be printed in the log"
@@ -85,15 +86,17 @@
                         </page>
                         <page string="Pharmacy" name="pharmacy">
                             <field name="pharmacy_line_ids">
-                            <tree>
+                            <tree editable="top">
                                 <field name="product_id"/>
-                                <field name="price_unit"/>
+                                <field name="price_unit"
+                                       attrs="{'column_invisible': [{'parent.hide_sales_price', '=', True)]}"/>
                                 <field name="qty"/>
                             </tree>
                             <form>
                                  <group>
                                     <field name="product_id"/>
-                                    <field name="price_unit"/>
+                                    <field name="price_unit"
+                                           attrs="{'column_invisible': [{'parent.hide_sales_price', '=', True)]}"/>/>
                                     <field name="qty"/>
                                 </group>
                             </form>
