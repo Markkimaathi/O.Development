@@ -5,12 +5,12 @@
         <field name="name">patient.tag.tree</field>
         <field name="model">patient.tag</field>
         <field name="arch" type="xml">
-        <tree>
-            <field name="name"/>
-            <field name="color" widget="color_picker"/>
-            <field name="active"/>
-        </tree>
-       </field>
+            <tree>
+                <field name="name"/>
+                <field name="color" widget="color_picker"/>
+                <field name="active"/>
+            </tree>
+        </field>
     </record>
 
     <record id="view_patient_tag_form" model="ir.ui.view">
@@ -24,6 +24,7 @@
                             <field name="name"/>
                         </group>
                         <group>
+                            <field name="color" widget="color_picker"/>
                             <field name="active" widget="boolean_toggle"/>
                         </group>
                     </group>
