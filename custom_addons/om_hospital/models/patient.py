@@ -15,6 +15,7 @@ class HospitalPatient(models.Model):
                               default='female')
     active = fields.Boolean(string="Active", default=True)
     appointment_id = fields.Many2one('hospital.patient', string="Appointments")
+    image = fields.Image(string="Image")
 
     @api.depends('date_of_birth')
     def _compute_age(self):
