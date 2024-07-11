@@ -31,6 +31,7 @@
                         <group>
                             <field name="ref"/>
                             <field name="gender"/>
+                            <field name="tag_ids" widget="many2many_tags"/>
                             <field name="active" invisible="1"/>
                         </group>
                     </group>
@@ -58,8 +59,8 @@
                 <field name="gender"/>
                 <filter name="male_filter" string="Male" domain="[('gender', '=', 'male')]"/>
                 <filter name="filter_female" string="Female" domain="[('gender', '=', 'female')]"/>
-<!--                <separator/>-->
-<!--                <filter name="filter_kids" string="kids" domain="[('age', '&lt;=', 5)]"/>-->
+                <!--                <separator/>-->
+                <!--                <filter name="filter_kids" string="kids" domain="[('age', '&lt;=', 5)]"/>-->
                 <separator/>
                 <filter name="filter_archived" string="Archived" domain="[('active', '=', False)]"/>
                 <group expand="0" string="Group By">
