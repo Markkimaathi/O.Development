@@ -61,12 +61,11 @@
                             condition="state == 'draft'"/>
                     <button name="action_done" string="Mark As Done" class="oe_highlight"
                             data-hotkeys="v"
-                            type="object"
-                            condition="state == 'in_consultation'"/>
-                    <button name="action_cancel" string="Cancel" data-hotkeys="z" type="object"
-                            condition="state in ('draft', 'in_consultation')"/>
-                    <button name="action_draft" string="Reset To Draft" type="object"
-                            condition="state in ('in_consultation')"/>
+                            type="object" condition="state == 'in_consultation'"/>
+                    <button name="action_cancel" string="Cancel" data-hotkeys="z"
+                            type="object"  condition="state in ('draft', 'in_consultation')"/>
+                    <button name="action_draft" string="Reset To Draft" data-hotkeys="r" type="object"
+                            condition="state in ('cancel')"/>
                     <!--options="{'clickable': '1'}"-->
                     <field name="state" widget="statusbar" nolabel="1"
                            statusbar_visible="draft,in_consultation,done"/>
