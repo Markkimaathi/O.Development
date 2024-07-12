@@ -21,4 +21,7 @@
               action="action_hospital_female_patient"
               parent="menu_patient_master"
               sequence="20"/>
+
+
 </odoo>
+
