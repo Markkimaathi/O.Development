@@ -1,7 +1,7 @@
 {
     'name': 'Hospital Management',
     'Version': '1.0.0',
-    'sequence': -100,
+    'sequence': -50,
     'author': 'Mark',
     'category': 'Hospital',
     'summary': 'Hospital management system',
