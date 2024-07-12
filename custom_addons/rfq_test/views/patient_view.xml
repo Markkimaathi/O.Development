@@ -20,9 +20,9 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <field name="image" widget="image" class="oe_avatar"/>
                     <group>
                         <group>
-                            <field name="image" widget="image" class="oe_avatar"/>
                             <field name="name"/>
                             <field name="date_of_birth"/>
                             <field name="age"/>
@@ -31,7 +31,7 @@
                         <group>
                             <field name="ref"/>
                             <field name="gender"/>
-                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="active" invisible="1"/>
                         </group>
                     </group>
@@ -47,6 +47,7 @@
         </field>
     </record>
 
+
     <record id="view_hospital_patient_search" model="ir.ui.view">
         <field name="name">hospital.patient.search</field>
         <field name="model">hospital.patient</field>
@@ -57,38 +58,39 @@
                 <field name="ref"/>
                 <field name="age"/>
                 <field name="gender"/>
-                <filter name="male_filter" string="Male" domain="[('gender', '=', 'male')]"/>
-                <filter name="filter_female" string="Female" domain="[('gender', '=', 'female')]"/>
+<!--                <filter name="male_filter" string="Male" domain="[('gender', '=', 'male')]"/>-->
+<!--                <filter name="filter_female" string="Female" domain="[('gender', '=', 'female')]"/>-->
                 <!--                <separator/>-->
                 <!--                <filter name="filter_kids" string="kids" domain="[('age', '&lt;=', 5)]"/>-->
                 <separator/>
                 <filter name="filter_archived" string="Archived" domain="[('active', '=', False)]"/>
-                <group expand="0" string="Group By">
-                    <filter string="Gender" name="group_by_gender" context="{'group_by': 'gender'}"/>
-                </group>
-                <searchpanel>
-                    <field name="gender" icon="fa-users" select="multi" enable_counters="1"/>
-                </searchpanel>
+<!--                <group expand="0" string="Group By">-->
+<!--                    <filter string="Gender" name="group_by_gender" context="{'group_by': 'gender'}"/>-->
+<!--                </group>-->
+<!--                <searchpanel>-->
+<!--                    <field name="gender" icon="fa-users" select="multi" enable_counters="1"/>-->
+<!--                </searchpanel>-->
             </search>
         </field>
     </record>
 
     <record id="action_hospital_patient" model="ir.actions.act_window">
-        <field name="name">Patients</field>
+        <field name="name">Request For Quotation</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">hospital.patient</field>
         <field name="view_mode">tree,form</field>
-        <field name="context">{'search_default_male_filter':1, 'search_default_group_by_gender':1}</field>
+        <field name="context">{}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Create your First Patient !
+                Create your First RFQ !
             </p>
         </field>
     </record>
 
     <menuitem id="menu_patient"
-              name="Patients"
+              name="RFQ"
               action="action_hospital_patient"
               parent="menu_patient_master"
               sequence="0"/>
+
 </odoo>

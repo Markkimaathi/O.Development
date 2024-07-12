@@ -7,7 +7,7 @@
               sequence="0"/>
 
     <menuitem id="menu_patient_master"
-              name="Patient Details"
+              name="Request For Quotation"
               parent="menu_hospital_root"
               sequence="0"/>
 
@@ -20,5 +20,24 @@
               name="Configurations"
               parent="menu_hospital_root"
               sequence="10"/>
+
+<!--    <menuitem-->
+<!--        id="parent_menu_purchase_request"-->
+<!--        name="Purchase Requests"-->
+<!--        sequence="22"-->
+<!--        web_icon="purchase_request,static/description/icon.png"-->
+<!--        groups="group_purchase_request_user,group_purchase_request_manager"/>-->
+
+<!--    <menuitem-->
+<!--        id="menu_purchase_request"-->
+<!--        name="Purchase Requests"-->
+<!--        parent="parent_menu_purchase_request"-->
+<!--        groups="group_purchase_request_user,group_purchase_request_manager"/>-->
+
+<!--    <menuitem-->
+<!--        id="menu_purchase_request_act"-->
+<!--        sequence="10"-->
+<!--        parent="menu_purchase_request"-->
+<!--        action="purchase_request_form_action"/>-->
 
 </odoo>

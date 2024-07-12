@@ -7,9 +7,9 @@ class HospitalPatient(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Hospital Patient'
 
-    name = fields.Char(string='Name', tracking=True)
+    name = fields.Char(string='Request Reference', tracking=True)
     date_of_birth = fields.Date(string='Date of Birth')
-    ref = fields.Char(string='Reference', default='Mark')
+    ref = fields.Char(string='Reference')
     age = fields.Integer(string='Age', compute='_compute_age', tracking=True)
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Gender', tracking=True,
                               default='female')
@@ -17,6 +17,15 @@ class HospitalPatient(models.Model):
     appointment_id = fields.Many2one('hospital.patient', string="Appointments")
     image = fields.Image(string="Image")
     tag_ids = fields.Many2many('patient.tag', string="Tags")
+
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('to_approve', 'To be approved'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+        ('done', 'Done')
+
+
 
     @api.depends('date_of_birth')
     def _compute_age(self):
