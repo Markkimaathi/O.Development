@@ -1,0 +1,15 @@
+{
+    'name': 'RFQ Test',
+    'Version': '1.0.0',
+    'sequence': -100,
+    'author': 'Mark',
+    'category': 'RFQ',
+    'summary': 'Request For Quotation',
+    'description': """RFQ""",
+    'depends': [],
+    'data': [],
+    'demo': [],
+    'auto-install': False,
+    'application': True,
+    'license': 'LGPL-3',
+}
