@@ -9,6 +9,7 @@
                 <group>
                     <group>
                         <field name="appointment_id"/>
+                        <field name="reason"/>
                     </group>
                     <group>
                     </group>
