@@ -11,20 +11,18 @@ class HospitalPatient(models.Model):
     date_of_birth = fields.Date(string='Date of Birth')
     ref = fields.Char(string='Reference')
     age = fields.Integer(string='Age', compute='_compute_age', tracking=True)
-    gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Gender', tracking=True,
-                              default='female')
-    active = fields.Boolean(string="Active", default=True)
+    gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Gender', tracking=True)
+    active = fields.Boolean(string="Active")
     appointment_id = fields.Many2one('hospital.patient', string="Appointments")
     image = fields.Image(string="Image")
     tag_ids = fields.Many2many('patient.tag', string="Tags")
 
-    state = fields.Selection([
-        ('draft', 'Draft'),
-        ('to_approve', 'To be approved'),
-        ('approved', 'Approved'),
-        ('rejected', 'Rejected'),
-        ('done', 'Done')
-
+    # state = fields.Selection([
+    #     ('draft', 'Draft'),
+    #     ('to_approve', 'To be approved'),
+    #     ('approved', 'Approved'),
+    #     ('rejected', 'Rejected'),
+    #     ('done', 'Done')
 
 
     @api.depends('date_of_birth')

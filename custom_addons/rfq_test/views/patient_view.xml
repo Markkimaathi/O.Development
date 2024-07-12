@@ -60,10 +60,10 @@
                 <field name="gender"/>
 <!--                <filter name="male_filter" string="Male" domain="[('gender', '=', 'male')]"/>-->
 <!--                <filter name="filter_female" string="Female" domain="[('gender', '=', 'female')]"/>-->
-                <!--                <separator/>-->
-                <!--                <filter name="filter_kids" string="kids" domain="[('age', '&lt;=', 5)]"/>-->
-                <separator/>
-                <filter name="filter_archived" string="Archived" domain="[('active', '=', False)]"/>
+<!--                                <separator/>-->
+<!--                                <filter name="filter_kids" string="kids" domain="[('age', '&lt;=', 5)]"/>-->
+<!--                <separator/>-->
+<!--                <filter name="filter_archived" string="Archived" domain="[('active', '=', False)]"/>-->
 <!--                <group expand="0" string="Group By">-->
 <!--                    <filter string="Gender" name="group_by_gender" context="{'group_by': 'gender'}"/>-->
 <!--                </group>-->
