@@ -1,11 +1,11 @@
 {
-    'name': 'Hospital Management',
+    'name': 'RFQ Test',
     'Version': '1.0.0',
     'sequence': -50,
     'author': 'Mark',
-    'category': 'Hospital',
-    'summary': 'Hospital management system',
-    'description': """Hospital management system""",
+    'category': 'RFQ',
+    'summary': 'Request For Quotation',
+    'description': """RFQ""",
     'depends': ['mail', 'product'],
     'data': [
         'security/ir.model.access.csv',
