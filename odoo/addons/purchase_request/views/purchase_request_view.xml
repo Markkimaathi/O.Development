@@ -108,7 +108,7 @@
                         <field
                             name="name"
                             class="oe_inline"
-                            readonly="is_name_editable == False"
+                             readonly="1"
                         />
                     </h1>
                     <group>
@@ -381,23 +381,5 @@
         parent="purchase.menu_procurement_management"
         action="purchase_request_form_action"
     />
-    <menuitem
-        id="parent_menu_purchase_request"
-        name="Purchase Requests"
-        sequence="22"
-        web_icon="purchase_request,static/description/icon.png"
-        groups="group_purchase_request_user,group_purchase_request_manager"
-    />
-    <menuitem
-        id="menu_purchase_request"
-        name="Purchase Requests"
-        parent="parent_menu_purchase_request"
-        groups="group_purchase_request_user,group_purchase_request_manager"
-    />
-    <menuitem
-        id="menu_purchase_request_act"
-        sequence="10"
-        parent="menu_purchase_request"
-        action="purchase_request_form_action"
-    />
+
 </odoo>

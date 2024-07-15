@@ -581,10 +581,5 @@
         id="menu_purchase_request_line"
         parent="purchase.menu_procurement_management"
     />
-    <menuitem
-        id="menu_purchase_request_line_act"
-        sequence="20"
-        parent="menu_purchase_request"
-        action="purchase_request_line_form_action"
-    />
+
 </odoo>
