@@ -1,30 +1,32 @@
-<!-- purchase_custom/views/purchase_custom_views.xml -->
 <odoo>
     <record id="view_purchase_rfq_form" model="ir.ui.view">
         <field name="name">purchase.rfq.form</field>
         <field name="model">purchase.rfq</field>
         <field name="arch" type="xml">
             <form string="Request for Quotation">
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                        <field name="partner_id"/>
-                        <field name="date_planned"/>
-                        <field name="amount_total" readonly="1"/>
-                    </group>
-                    <notebook>
-                        <page string="Order Lines">
-                            <field name="order_line_ids">
-                                <tree editable="bottom">
-                                    <field name="product_id"/>
-                                    <field name="product_qty"/>
-                                    <field name="price_unit"/>
-                                    <field name="price_subtotal" readonly="1"/>
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
-                </sheet>
+                <header>
+                    <button name="action_confirm" type="object" string="Confirm" class="oe_highlight" modifiers="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button name="action_cancel" type="object" string="Cancel" class="oe_highlight" modifiers="{'invisible': [('state', 'not in', ('draft', 'sent'))]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,done,cancel"/>
+                </header>
+                <group>
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="date_planned"/>
+                    <field name="amount_total" readonly="1"/>
+                </group>
+                <notebook>
+                    <page string="Order Lines">
+                        <field name="order_line_ids">
+                            <tree editable="bottom">
+                                <field name="product_id"/>
+                                <field name="product_qty"/>
+                                <field name="price_unit"/>
+                                <field name="price_subtotal" readonly="1"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
                 <footer>
                     <button string="Confirm" type="object" name="action_confirm" class="btn-primary"/>
                     <button string="Cancel" type="object" name="action_cancel" class="btn-secondary"/>
@@ -40,13 +42,16 @@
             <tree string="Request for Quotation">
                 <field name="name"/>
                 <field name="partner_id"/>
-                <field name="state"/>
+                <field name="state"
+                       decoration-success="state == 'done'"
+                       decoration-info="state == 'sent'"
+                       decoration-danger="state == 'cancel'"
+                       widget="badge"/>
                 <field name="amount_total" readonly="1"/>
             </tree>
         </field>
     </record>
 
-    <menuitem id="menu_purchase_rfq" name="RFQs" parent="purchase.menu_purchase_root" sequence="20"/>
 
     <record id="action_purchase_rfq" model="ir.actions.act_window">
         <field name="name">RFQs</field>
@@ -54,5 +59,7 @@
         <field name="view_mode">tree,form</field>
     </record>
 
+
+    <menuitem id="menu_purchase_rfq" name="RFQs" parent="purchase.menu_purchase_root" sequence="20"/>
     <menuitem id="submenu_purchase_rfq" name="All RFQs" parent="menu_purchase_rfq" action="action_purchase_rfq"/>
 </odoo>

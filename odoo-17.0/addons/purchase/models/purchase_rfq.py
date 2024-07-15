@@ -1,6 +1,4 @@
-# purchase_custom/models/rfq.py
-from odoo import models, fields, api, _
-
+from odoo import models, fields, api
 
 class PurchaseRFQ(models.Model):
     _name = 'purchase.rfq'
@@ -50,6 +48,7 @@ class PurchaseRFQ(models.Model):
     def action_cancel(self):
         self.ensure_one()
         self.write({'state': 'cancel'})
+
 
 class PurchaseRFQLine(models.Model):
     _name = 'purchase.rfq.line'
