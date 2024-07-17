@@ -6,6 +6,7 @@ class PurchaseRFQ(models.Model):
 
     name = fields.Char(string='RFQ Reference', required=True, copy=False, default='New')
     partner_id = fields.Many2one('res.partner', string='Vendor', required=True)
+    company_id = fields.Many2one('res.company', string='Company')
     order_line_ids = fields.One2many('purchase.rfq.line', 'rfq_id', string='Order Lines')
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -54,6 +55,7 @@ class PurchaseRFQLine(models.Model):
     _name = 'purchase.rfq.line'
     _description = 'RFQ Line'
 
+    name = fields.Char(string='Description')
     rfq_id = fields.Many2one('purchase.rfq', string='RFQ Reference', required=True, ondelete='cascade')
     product_id = fields.Many2one('product.product', string='Product', required=True)
     product_qty = fields.Float(string='Quantity', required=True)

@@ -53,13 +53,14 @@
     </record>
 
 
-    <record id="action_purchase_rfq" model="ir.actions.act_window">
+   <record id="purchase.purchase_rfq_form_action" model="ir.actions.act_window">
         <field name="name">RFQs</field>
         <field name="res_model">purchase.rfq</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-
     <menuitem id="menu_purchase_rfq" name="RFQs" parent="purchase.menu_purchase_root" sequence="20"/>
-    <menuitem id="submenu_purchase_rfq" name="All RFQs" parent="menu_purchase_rfq" action="action_purchase_rfq"/>
+    <menuitem id="submenu_purchase_rfq" name="All RFQs" parent="menu_purchase_rfq" action="purchase.purchase_rfq_form_action"/>
+
+
 </odoo>
