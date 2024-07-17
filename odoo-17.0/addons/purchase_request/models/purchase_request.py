@@ -173,6 +173,18 @@ class PurchaseRequest(models.Model):
             action["res_id"] = lines.id
         return action
 
+    def action_view_purchase_rfq(self):
+        action = self.env["ir.actions.actions"]._for_xml_id("purchase.purchase_rfq")
+        lines = self.mapped("line_ids.purchase_lines.order_id")
+        if len(lines) > 1:
+            action["domain"] = [("id", "in", lines.ids)]
+        elif lines:
+            action["views"] = [
+                (self.env.ref("purchase.purchase_order_form").id, "form")
+            ]
+            action["res_id"] = lines.id
+        return action
+
     @api.depends("line_ids")
     def _compute_move_count(self):
         for rec in self:
