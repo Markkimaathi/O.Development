@@ -1,0 +1,48 @@
+<odoo>
+    <record id="view_request_for_quotation_tree" model="ir.ui.view">
+        <field name="name">request.for.quotation.tree</field>
+        <field name="model">purchase.request</field>
+        <field name="arch" type="xml">
+            <tree decoration-bf="message_needaction==True" decoration-info="state in ('draft','to_approve')" decoration-muted="state in ('rejected')">
+                <field name="message_needaction" invisible="1"/>
+                <field name="name"/>
+                <field name="date_start"/>
+                <field name="requested_by"/>
+                <field name="company_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_request_for_quotation_form" model="ir.ui.view">
+        <field name="name">request.for.quotation.form</field>
+        <field name="model">purchase.request</field>
+        <field name="arch" type="xml">
+            <form string="Request for Quotation">
+                <header>
+                    <button name="button_confirm" type="object" string="Confirm Order" class="btn-primary" attrs="{'invisible': [('state', '!=', 'sent')]}"/>
+                    <button name="button_approve" type="object" string="Approve Order" class="btn-primary" groups="purchase.group_purchase_manager" attrs="{'invisible': [('state', '!=', 'to approve')]}" />
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="date_start"/>
+                        <field name="requested_by"/>
+                        <field name="company_id"/>
+                        <field name="origin"/>
+                        <field name="currency_id"/>
+                        <field name="estimated_cost"/>
+                        <field name="state"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_request_for_quotation" model="ir.actions.act_window">
+        <field name="name">Request for Quotations</field>
+        <field name="res_model">purchase.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_request_for_quotation_tree"/>
+    </record>
+</odoo>
