@@ -1,30 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
+<!--menu item called Hospital-->
     <menuitem id="menu_hospital_root"
               name="Hospital"
-              web_icon="om_hospital,static/description/icon.png"
+              web_icon="om_hospital,static/description/hospital.png"
               sequence="0"/>
-
+<!--menu item called Patient Details -->
     <menuitem id="menu_patient_master"
-              name="Patient Details"
+              name="Patient Detail"
               parent="menu_hospital_root"
               sequence="0"/>
 
+    <!--    menu item called appointment-->
     <menuitem id="menu_appointment_master"
-              name="Appointments"
+              name="Appointment"
               parent="menu_hospital_root"
-              sequence="20"/>
-
-    <menuitem id="menu_configuration"
-              name="Configurations"
-              parent="menu_hospital_root"
-              sequence="100"/>
-
-    <menuitem id="menu_cancel_appointment"
-              name="Cancellation"
-              parent="menu_appointment_master"
-              action="action_cancel_appointment"
-              sequence="20"/>
+              sequence="11"/>
 
 </odoo>
