@@ -10,7 +10,7 @@
                     <field name="state" widget="statusbar" statusbar_visible="draft,sent,done,cancel"/>
                 </header>
                 <group>
-                    <field name="name"/>
+                    <field name="rfq_ref"/>
                     <field name="partner_id"/>
                     <field name="date_planned"/>
                     <field name="amount_total" readonly="1"/>
@@ -28,7 +28,7 @@
                     </page>
                 </notebook>
                 <footer>
-                    <button string="Confirm" type="object" name="action_confirm" class="btn-primary"/>
+                    <button string="Confirm" type="object" name="action_done" class="btn-primary"/>
                     <button string="Cancel" type="object" name="action_cancel" class="btn-secondary"/>
                 </footer>
             </form>
@@ -40,7 +40,7 @@
         <field name="model">purchase.rfq</field>
         <field name="arch" type="xml">
             <tree string="Request for Quotation">
-                <field name="name"/>
+                <field name="rfq_ref"/>
                 <field name="partner_id"/>
                 <field name="state"
                        decoration-success="state == 'done'"

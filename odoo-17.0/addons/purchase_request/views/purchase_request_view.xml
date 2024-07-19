@@ -376,6 +376,7 @@
             </p>
         </field>
     </record>
+
     <menuitem
         id="menu_purchase_request_pro_mgt"
         parent="purchase.menu_procurement_management"
