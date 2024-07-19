@@ -1,0 +1,11 @@
+<odoo>
+    <!-- Auto generates reference numbers -->
+    <data noupdate="1">
+        <record id="seq_patient_reference" model="ir.sequence">
+            <field name="name">Patient Reference</field>
+            <field name="code">hospital.patient</field>
+            <field name="prefix">PAT-</field>
+            <field name="padding">5</field>
+        </record>
+    </data>
+</odoo>

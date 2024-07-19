@@ -53,9 +53,10 @@ class PurchaseRequest(models.Model):
                 rec.is_editable = True
 
     name = fields.Char(
-        string="Request Reference",
-        required=True,
-        default=lambda self: _("New"),
+        string="PR Reference",
+        readonly=True,
+        copy=False,
+        default="New",
         tracking=True,
     )
     is_name_editable = fields.Boolean(
@@ -161,14 +162,14 @@ class PurchaseRequest(models.Model):
         for rec in self:
             rec.purchase_count = len(rec.mapped("line_ids.purchase_lines.order_id"))
 
-    def action_view_purchase_order(self):
+    def action_view_purchase_request(self):
         action = self.env["ir.actions.actions"]._for_xml_id("purchase.purchase_rfq")
         lines = self.mapped("line_ids.purchase_lines.order_id")
         if len(lines) > 1:
             action["domain"] = [("id", "in", lines.ids)]
         elif lines:
             action["views"] = [
-                (self.env.ref("purchase.purchase_order_form").id, "form")
+                (self.env.ref("purchase.purchase_rfq_form").id, "form")
             ]
             action["res_id"] = lines.id
         return action

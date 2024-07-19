@@ -17,7 +17,7 @@
         "data/purchase_request_sequence.xml",
         "data/purchase_request_data.xml",
         "reports/report_purchase_request.xml",
-        "wizard/purchase_request_line_make_purchase_order_view.xml",
+        "wizard/purchase_request_line_make_purchase_rfq_view.xml",
         "views/purchase_request_view.xml",
         "views/purchase_request_line_view.xml",
         "views/purchase_request_report.xml",

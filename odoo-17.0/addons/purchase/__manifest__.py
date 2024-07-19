@@ -5,7 +5,7 @@
     'name': 'Purchase',
     'version': '1.2',
     'category': 'Inventory/Purchase',
-    'sequence': 35,
+    'sequence': 0,
     'summary': 'Purchase orders, tenders and agreements',
     'website': 'https://www.odoo.com/app/purchase',
     'depends': ['account'],
@@ -30,7 +30,7 @@
         'report/purchase_quotation_templates.xml',
         'views/product_packaging_views.xml',
         'views/analytic_account_views.xml',
-        'views/purchase_custom_views.xml',
+        'views/purchase_rfq_views.xml',
     ],
     'demo': [
         'data/purchase_demo.xml',
