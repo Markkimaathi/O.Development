@@ -2,21 +2,23 @@
 <!-- Copyright 2018-2019 ForgeFlow, S.L.
      License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0) -->
 <odoo>
-    <record id="view_purchase_request_line_make_rfq" model="ir.ui.view">
-        <field name="name">Purchase Request Line Make RFQ</field>
-        <field name="model">purchase.request.line.make.rfq</field>
+    <record id="view_purchase_request_line_make_purchase_order" model="ir.ui.view">
+        <field name="name">Purchase Request Line Make Purchase Order</field>
+        <field name="model">purchase.request.line.make.purchase.order</field>
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="Create RFQ">
+                <separator string="Existing RFQ to update:" />
+                <newline />
                 <group>
                     <field
-                        name="purchase_rfq_id"
+                        name="purchase_order_id"
                         domain="[('partner_id', '=', supplier_id)]"
                     />
                     <field name="sync_data_planned" />
                 </group>
                 <newline />
-                <separator string="New RFQ details:" />
+                <separator string="New PO details:" />
                 <newline />
                 <group>
                     <field name="supplier_id" />
@@ -47,7 +49,7 @@
                 <newline />
                 <footer>
                     <button
-                        name="make_purchase_rfq"
+                        name="make_purchase_order"
                         string="Create RFQ"
                         type="object"
                         class="oe_highlight"
@@ -58,14 +60,14 @@
         </field>
     </record>
     <record
-        id="action_purchase_request_line_make_rfq"
+        id="action_purchase_request_line_make_purchase_order"
         model="ir.actions.act_window"
     >
         <field name="name">Create RFQ</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">purchase.request.line.make.rfq</field>
+        <field name="res_model">purchase.request.line.make.purchase.order</field>
         <field name="view_mode">form</field>
-        <field name="view_id" ref="view_purchase_request_line_make_rfq" />
+        <field name="view_id" ref="view_purchase_request_line_make_purchase_order" />
         <field name="target">new</field>
         <field
             name="binding_model_id"

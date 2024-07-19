@@ -19,8 +19,6 @@ class PurchaseRequest(models.Model):
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "id desc"
 
-    rfq_id = fields.Many2one('purchase.order', string='RFQ', copy=False)
-
     @api.model
     def _company_get(self):
         return self.env["res.company"].browse(self.env.company.id)
@@ -175,22 +173,6 @@ class PurchaseRequest(models.Model):
             action["res_id"] = lines.id
         return action
 
-    def action_purchase_request_line_make_rfq(self):
-        action = (
-            self.env.ref("purchase.purchase_rfq_form_action")
-            .sudo()
-            .read()[0]
-        )
-        lines = self.mapped("line_ids.purchase_lines.order_id")
-        if len(lines) > 1:
-            action["domain"] = [("id", "in", lines.ids)]
-        elif lines:
-            action["views"] = [
-                (self.env.ref("purchase.purchase_rfq_form").id, "form")
-            ]
-            action["res_id"] = lines.ids[0]
-        return action
-
     @api.depends("line_ids")
     def _compute_move_count(self):
         for rec in self:
@@ -233,22 +215,6 @@ class PurchaseRequest(models.Model):
                 (self.env.ref("purchase_request.purchase_request_line_form").id, "form")
             ]
             action["res_id"] = lines.ids[0]
-        return action
-
-    def action_purchase_rfq(self):
-        action = (
-            self.env.ref("purchase.purchase_rfq_form_action")
-            .sudo()
-            .read()[0]
-        )
-        rfqs = self.mapped("rfq_id")
-        if len(rfqs) > 1:
-            action["domain"] = [("id", "in", rfqs.ids)]
-        elif rfqs:
-            action["views"] = [
-                (self.env.ref("purchase.purchase_rfq_form").id, "form")
-            ]
-            action["res_id"] = rfqs.ids[0]
         return action
 
     @api.depends("state", "line_ids.product_qty", "line_ids.cancelled")
