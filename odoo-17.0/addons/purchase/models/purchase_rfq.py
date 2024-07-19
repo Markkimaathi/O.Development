@@ -6,6 +6,7 @@ class PurchaseRFQ(models.Model):
 
     name = fields.Char(string='RFQ Reference', required=True, copy=False, default='New')
     partner_id = fields.Many2one('res.partner', string='Vendor', required=True)
+    rfq_ref = fields.Char(string='RFQ Reference')
     company_id = fields.Many2one('res.company', string='Company')
     order_line_ids = fields.One2many('purchase.rfq.line', 'rfq_id', string='Order Lines')
     state = fields.Selection([

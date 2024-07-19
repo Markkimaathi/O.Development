@@ -27,10 +27,6 @@
                         </field>
                     </page>
                 </notebook>
-                <footer>
-                    <button string="Confirm" type="object" name="action_done" class="btn-primary"/>
-                    <button string="Cancel" type="object" name="action_cancel" class="btn-secondary"/>
-                </footer>
             </form>
         </field>
     </record>
