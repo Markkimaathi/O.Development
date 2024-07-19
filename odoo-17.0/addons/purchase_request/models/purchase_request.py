@@ -3,6 +3,8 @@
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+import pytz
+
 
 _STATES = [
     ("draft", "Draft"),
@@ -18,6 +20,11 @@ class PurchaseRequest(models.Model):
     _description = "Purchase Request"
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "id desc"
+
+    rfq_id = fields.Many2one('purchase.rfq', string='RFQ Reference')
+    sync_data_planned = fields.Boolean(string='Sync Data Planned')
+    supplier_id = fields.Many2one('res.partner', string='Supplier')
+    item_ids = fields.One2many('purchase.request.line', 'request_id', string='Items')
 
     @api.model
     def _company_get(self):
@@ -51,6 +58,87 @@ class PurchaseRequest(models.Model):
                 rec.is_editable = False
             else:
                 rec.is_editable = True
+
+    def make_rfq(self):
+        res = []
+        rfq_obj = self.env["purchase.rfq"]
+        rfq_line_obj = self.env["purchase.rfq.line"]
+        pr_line_obj = self.env["purchase.request.line"]
+        user_tz = pytz.timezone(self.env.user.tz or "UTC")
+        rfq = False
+
+        for item in self.item_ids:
+            line = item.line_id
+            if item.product_qty <= 0.0:
+                raise UserError(_("Enter a positive quantity."))
+
+            if not rfq:
+                rfq_data = self._prepare_rfq(
+                    line.request_id.picking_type_id,
+                    line.request_id.group_id,
+                    line.company_id,
+                    line.origin,
+                )
+                rfq = rfq_obj.create(rfq_data)
+            else:
+                rfq = self.rfq_id  # Ensure rfq_id is used if set
+
+            domain = self._get_rfq_line_search_domain(rfq, item)
+            available_rfq_lines = rfq_line_obj.search(domain)
+            new_pr_line = True
+            if not line.product_uom_id:
+                line.product_uom_id = item.product_uom_id
+            alloc_uom = line.product_uom_id
+            wizard_uom = item.product_uom_id
+            if available_rfq_lines and not item.keep_description:
+                new_pr_line = False
+                rfq_line = available_rfq_lines[0]
+                rfq_line.purchase_request_lines = [(4, line.id)]
+                rfq_line.move_dest_ids |= line.move_dest_ids
+                rfq_line_product_uom_qty = rfq_line.product_uom._compute_quantity(
+                    rfq_line.product_uom_qty, alloc_uom
+                )
+                wizard_product_uom_qty = wizard_uom._compute_quantity(
+                    item.product_qty, alloc_uom
+                )
+                all_qty = min(rfq_line_product_uom_qty, wizard_product_uom_qty)
+                self.create_allocation(rfq_line, line, all_qty, alloc_uom)
+            else:
+                rfq_line_data = self._prepare_rfq_line(rfq, item)
+                if item.keep_description:
+                    rfq_line_data["name"] = item.name
+                rfq_line = rfq_line_obj.create(rfq_line_data)
+                rfq_line_product_uom_qty = rfq_line.product_uom._compute_quantity(
+                    rfq_line.product_uom_qty, alloc_uom
+                )
+                wizard_product_uom_qty = wizard_uom._compute_quantity(
+                    item.product_qty, alloc_uom
+                )
+                all_qty = min(rfq_line_product_uom_qty, wizard_product_uom_qty)
+                self.create_allocation(rfq_line, line, all_qty, alloc_uom)
+            new_qty = pr_line_obj._calc_new_qty(
+                line, rfq_line=rfq_line, new_pr_line=new_pr_line
+            )
+            rfq_line.product_qty = new_qty
+            date_required = item.line_id.date_required
+            rfq_line.date_planned = (
+                user_tz.localize(
+                    datetime(date_required.year, date_required.month, date_required.day)
+                )
+                .astimezone(pytz.utc)
+                .replace(tzinfo=None)
+            )
+            res.append(rfq.id)
+
+        return {
+            "domain": [("id", "in", res)],
+            "name": _("RFQ"),
+            "view_mode": "tree,form",
+            "res_model": "purchase.rfq",
+            "view_id": False,
+            "context": False,
+            "type": "ir.actions.act_window",
+        }
 
     name = fields.Char(
         string="Request Reference",
