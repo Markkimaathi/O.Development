@@ -35,6 +35,8 @@ class PurchaseRFQ(models.Model):
         inverse_name="wiz_id",
         string="Items",
     )
+    fiscal_position_id = fields.Many2one('account.fiscal.position', string='Fiscal Position', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+
     @api.depends('order_line_ids.price_subtotal')
     def _compute_amount_total(self):
         for rfq in self:
