@@ -24,8 +24,8 @@
                             invisible="state not in 'sent' "/>
                     <button name="action_cancel" type="object" string="Cancel" class="oe_highlight"
                             invisible="state in ['done','cancel']"/>
-                    <!--                    <button name="action_create_po" type="action" string="Create Purchase Order" class="oe_highlight"-->
-                    <!--                            invisible="state not in 'done' "/>-->
+                    <button name="%(action_purchase_rfq)d" type="action" string="View RFQ" class="oe_highlight"
+                            invisible="state not in 'done' "/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,sent,done"/>
                 </header>
                 <sheet>
@@ -38,28 +38,28 @@
                     <notebook>
 
                         <page string="Order Lines">
-<!--                            <group>-->
-                                <field name="order_line_ids">
-                                    <tree editable="bottom">
-                                        <field name="product_id"/>
-                                        <field name="product_qty"/>
-                                        <!--                                <field name="price_unit"/>-->
-                                        <!--                                <field name="price_subtotal" readonly="1"/>-->
-                                    </tree>
-                                </field>
-<!--                            </group>-->
+                            <!--                            <group>-->
+                            <field name="order_line_ids">
+                                <tree editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="product_qty"/>
+                                    <!--                                <field name="price_unit"/>-->
+                                    <!--                                <field name="price_subtotal" readonly="1"/>-->
+                                </tree>
+                            </field>
+                            <!--                            </group>-->
 
 
-<!--                            <group>-->
-<!--                                <field name="item_ids">-->
-<!--                                    <tree>-->
-<!--                                        <field name="product_id"/>-->
-<!--                                        <field name="name"/>-->
-<!--                                        <field name="product_qty"/>-->
-<!--                                        <field name="product_uom_id"/>-->
-<!--                                    </tree>-->
-<!--                                </field>-->
-<!--                            </group>-->
+                            <!--                            <group>-->
+                            <!--                                <field name="item_ids">-->
+                            <!--                                    <tree>-->
+                            <!--                                        <field name="product_id"/>-->
+                            <!--                                        <field name="name"/>-->
+                            <!--                                        <field name="product_qty"/>-->
+                            <!--                                        <field name="product_uom_id"/>-->
+                            <!--                                    </tree>-->
+                            <!--                                </field>-->
+                            <!--                            </group>-->
                         </page>
                     </notebook>
                 </sheet>
