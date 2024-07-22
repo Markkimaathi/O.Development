@@ -471,8 +471,8 @@ class PurchaseOrder(models.Model):
         }
 
     def print_quotation(self):
-        self.write({'state': "draft"})
-        return self.env.ref('purchase.report_purchase_quotation').report_action(self)
+        self.write({'state': "purchase"})
+        return self.env.ref('purchase.action_report_purchase_order').report_action(self)
 
     def button_approve(self, force=False):
         self = self.filtered(lambda order: order._approval_allowed())

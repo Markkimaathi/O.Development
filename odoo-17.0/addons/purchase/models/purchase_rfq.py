@@ -60,7 +60,9 @@ class PurchaseRFQ(models.Model):
         self.write({'state': 'sent'})
 
 
-
+    def print_quotation(self):
+        self.write({'state': "done"})
+        return self.env.ref('purchase.report_purchase_quotation').report_action(self)
 
     @api.model
     def _prepare_item(self, line):
@@ -170,7 +172,7 @@ class PurchaseRequestLineMakePurchaseRfqItem(models.TransientModel):
     _description = "Purchase Request Line Make Purchase RFQ Item"
 
     wiz_id = fields.Many2one(
-        comodel_name="purchase.request.line.make.purchase.rfq",
+        comodel_name="purchase.rfq",
         string="Wizard",
         required=True,
         ondelete="cascade",
