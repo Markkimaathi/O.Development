@@ -36,6 +36,30 @@ class PurchaseRFQ(models.Model):
         string="Items",
     )
     fiscal_position_id = fields.Many2one('account.fiscal.position', string='Fiscal Position', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    dest_address_id = fields.Many2one('res.partner', string='Shipping Address')
+    picking_type_id = fields.Many2one(
+        comodel_name="stock.picking.type",
+        string="Picking Type",
+        required=True,
+    )
+    group_id = fields.Many2one(
+        comodel_name="procurement.group",
+        string="Procurement Group",
+        copy=False,
+        index=True,
+    )
+    line_count = fields.Integer(
+        string="Purchase Request Line count",
+        compute="_compute_line_count",
+        readonly=True,
+    )
+    move_count = fields.Integer(
+        string="Stock Move count", compute="_compute_move_count", readonly=True
+    )
+    purchase_count = fields.Integer(
+        string="Purchases count", compute="_compute_purchase_count", readonly=True
+    )
+
 
     @api.depends('order_line_ids.price_subtotal')
     def _compute_amount_total(self):
