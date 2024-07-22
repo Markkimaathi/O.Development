@@ -24,7 +24,17 @@ class PurchaseRFQ(models.Model):
     currency_id = fields.Many2one('res.currency', string='Currency', required=True,
                                   default=lambda self: self.env.company.currency_id.id)
     amount_total = fields.Monetary(string='Total', store=True, readonly=True, compute='_compute_amount_total')
-
+    supplier_id = fields.Many2one(
+        comodel_name="res.partner",
+        string="Supplier",
+        required=True,
+        context={"res_partner_search_mode": "supplier"},
+    )
+    item_ids = fields.One2many(
+        comodel_name="purchase.request.line.make.purchase.rfq.item",
+        inverse_name="wiz_id",
+        string="Items",
+    )
     @api.depends('order_line_ids.price_subtotal')
     def _compute_amount_total(self):
         for rfq in self:
@@ -154,3 +164,15 @@ class PurchaseRFQLine(models.Model):
         for line in self:
             line.price_subtotal = line.product_qty * line.price_unit
 
+
+class PurchaseRequestLineMakePurchaseRfqItem(models.TransientModel):
+    _name = "purchase.request.line.make.purchase.rfq.item"
+    _description = "Purchase Request Line Make Purchase RFQ Item"
+
+    wiz_id = fields.Many2one(
+        comodel_name="purchase.request.line.make.purchase.rfq",
+        string="Wizard",
+        required=True,
+        ondelete="cascade",
+        readonly=True,
+    )
