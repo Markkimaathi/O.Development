@@ -154,4 +154,3 @@ class PurchaseRFQLine(models.Model):
         for line in self:
             line.price_subtotal = line.product_qty * line.price_unit
 
-
