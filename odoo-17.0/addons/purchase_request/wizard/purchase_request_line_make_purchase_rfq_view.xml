@@ -6,19 +6,19 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="Create RFQ">
-                <separator string="Existing RFQ to update:" />
-                <newline />
+                <separator string="Existing RFQ to update:"/>
+                <newline/>
                 <group>
                     <field name="purchase_rfq_id" domain="[('partner_id', '=', supplier_id)]"/>
                     <field name="sync_data_planned"/>
                 </group>
-                <newline />
-                <separator string="New RFQ details:" />
-                <newline />
+                <newline/>
+                <separator string="New RFQ details:"/>
+                <newline/>
                 <group>
                     <field name="supplier_id"/>
                 </group>
-                <newline />
+                <newline/>
                 <group>
                     <field name="item_ids" nolabel="1" colspan="2">
                         <tree name="Details" create="false" editable="bottom">
@@ -33,9 +33,9 @@
                         </tree>
                     </field>
                 </group>
-                <newline />
+                <newline/>
                 <footer>
-                    <button name="make_purchase_rfq" string="Create RFQ" type="object" class="oe_highlight"/>
+                    <button name="%(action_purchase_rfq)d" string="Create RFQ" type="action" class="oe_highlight"/>
                     <button special="cancel" string="Cancel" class="oe_link"/>
                 </footer>
             </form>
@@ -50,5 +50,10 @@
         <field name="view_id" ref="view_purchase_request_line_make_purchase_rfq"/>
         <field name="target">new</field>
         <field name="binding_model_id" ref="purchase_request.model_purchase_request_line"/>
+    </record>
+    <record id="action_purchase_rfq" model="ir.actions.act_window">
+        <field name="name">RFQs</field>
+        <field name="res_model">purchase.rfq</field>
+        <field name="view_mode">tree</field>
     </record>
 </odoo>

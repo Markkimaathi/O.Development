@@ -99,7 +99,7 @@ class PurchaseRequest(models.Model):
     )
     line_ids = fields.One2many(
         comodel_name="purchase.request.line",
-        inverse_name="request_id",
+            inverse_name="request_id",
         string="Products to Purchase",
         readonly=False,
         copy=True,

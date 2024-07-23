@@ -59,6 +59,7 @@ class PurchaseRFQ(models.Model):
     purchase_count = fields.Integer(
         string="Purchases count", compute="_compute_purchase_count", readonly=True
     )
+    origin = fields.Char(string='Source Documents')
 
 
     @api.depends('order_line_ids.price_subtotal')
@@ -191,16 +192,3 @@ class PurchaseRFQLine(models.Model):
     def _compute_price_subtotal(self):
         for line in self:
             line.price_subtotal = line.product_qty * line.price_unit
-
-
-class PurchaseRequestLineMakePurchaseRfqItem(models.TransientModel):
-    _name = "purchase.request.line.make.purchase.rfq.item"
-    _description = "Purchase Request Line Make Purchase RFQ Item"
-
-    wiz_id = fields.Many2one(
-        comodel_name="purchase.rfq",
-        string="Wizard",
-        required=True,
-        ondelete="cascade",
-        readonly=True,
-    )

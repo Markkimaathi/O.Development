@@ -81,3 +81,12 @@ class HospitalAppointment(models.Model):
                 'type': 'rainbow_man',
             }
         }
+
+
+class AppointmentPharmacyLines(models.Model):
+    _name = "appointment.pharmacy.lines"
+    _description = "Appointment Pharmacy Lines"
+
+    product_id = fields.Many2many('product.product', string='Products')
+    price_unit = fields.Float(string='Price')
+    qty = fields.Integer(string='Quantity')

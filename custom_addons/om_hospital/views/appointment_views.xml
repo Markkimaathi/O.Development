@@ -81,10 +81,7 @@
                             </group>
                         </page>
                         <page name="pharmacy" string="Pharmacy">
-                            <group>
-                                <field name="ref"/>
 
-                            </group>
                         </page>
                     </notebook>
                 </sheet>
