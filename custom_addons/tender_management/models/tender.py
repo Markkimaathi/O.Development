@@ -5,12 +5,39 @@ from _datetime import date
 class TenderManagement(models.Model):
     _name = "tender.management"
     _description = "Tender Management"
-    # _inherit = ['mail.thread', 'mail.activity.mixin',]
+    _inherit = ['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(string="Tender")
     ref = fields.Char(string="Reference", readonly=True, copy=False, default='New')
-    # date_created = fields.Date(string='Start Date', default=fields.Datetime.now)
-    # date_bid_to_end = fields.Date(string='End Date', default=fields.Date.context_today)
+    date_created = fields.Date(string='Start Date', default=fields.Datetime.now)
+    date_bid_to_end = fields.Date(string='End Date', default=fields.Date.context_today)
+    state = fields.Selection([
+        ('draft', 'DRAFT'),
+        ('submit', 'SUBMITTED'),
+        ('approve', 'APPROVE'),
+        ('approved', 'IN PROGRESS'),
+        ('done', 'Done'),
+        ('cancel', 'Cancel')], string='State', default='draft', required=True
+    )
+
+    def action_approve(self):
+       for rec in self:
+           rec.state = 'approve'
+    def action_done(self):
+       for rec in self:
+           rec.state = 'done'
+    def action_cancel(self):
+        for rec in self:
+            rec.state = 'cancel'
+    def action_draft(self):
+        for rec in self:
+            rec.state = 'draft'
+    def action_approved(self):
+        for rec in self:
+            rec.state = 'approved'
+    def action_submit(self):
+        for rec in self:
+            rec.state = 'submit'
 
     @api.model
     def create(self, vals):

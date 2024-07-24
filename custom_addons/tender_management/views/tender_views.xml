@@ -14,12 +14,60 @@
         <field name="name">tenders.management</field>
         <field name="model">tender.management</field>
         <field name="arch" type="xml">
-            <form string="Tenders Management">
-                <field name="name"/>
-                <field name="ref"/>
+            <form create="0">
+                <!--                buttons appearing at the top of the form-->
+                <header>
+                    <button name="action_approve" string="APPROVE" type="object" invisible="state not in 'submit'"
+                            class="oe_highlight"/>
+                    <button name="action_approved" string="IN PROGRESS" type="object" invisible="state not in 'approve'"
+                            class="oe_highlight"/>
+                    <button name="action_submit" string="SUBMITTED" type="object" invisible="state not in 'draft'"
+                            class="oe_highlight"/>
+                    <button name="action_done" string="DONE" type="object" invisible="state not in 'approved'"
+                            class="oe_highlight"/>
+                    <button name="action_cancel" string="CANCEL" type="object" invisible="state in ['done','cancel']"
+                            class="oe_highlight"/>
+                    <button name="action_draft" string="DRAFT" type="object" invisible="state not in 'cancel'"
+                            class="oe_highlight"/>
+                    <button name="%()d" string="BID" type="action" invisible="state not in 'done'"
+                            class="oe_highlight"/>
+                    <field name="state" widget="statusbar" nolabel="1"
+                           statusbar_visible="draft,submit,approve,approved,done"/>
+                </header>
+                <sheet>
+<!--                    <div class="oe_title">-->
+<!--                        <h1>-->
+<!--                            <field name="priority" widget="priority" class="mr-3"/>-->
+<!--                        </h1>-->
+<!--                    </div>-->
+                    <group>
+                        <field name="name" default_focus="1"/>
+                        <field name="ref"/>
+                        <field name="date_created"/>
+                        <field name="date_bid_to_end"/>
+                    </group>
+<!--                    <notebook>-->
+<!--                        <page name="prescription" string="Material">-->
+<!--                            <group>-->
+<!--                            </group>-->
+<!--                        </page>-->
+<!--                        <page name="pharmacy" string="Labour">-->
+<!--                        </page>-->
+<!--                        <page name="pharmacy" string="Overhead">-->
+<!--                        </page>-->
+
+<!--                    </notebook>-->
+                </sheet>
+                <!-- chatter-->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                </div>
             </form>
         </field>
     </record>
+
     <record id="action_tenders" model="ir.actions.act_window">
         <field name="name">Tenders</field>
         <field name="type">ir.actions.act_window</field>
