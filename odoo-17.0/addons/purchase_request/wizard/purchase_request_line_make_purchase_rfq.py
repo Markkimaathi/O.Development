@@ -38,6 +38,7 @@ class PurchaseRequestLineMakePurchaseRfq(models.TransientModel):
             "if the scheduled date matches as well."
         ),
     )
+    wiz_id = fields.Many2one('purchase.request.line.make.purchase.rfq.item', string='Wizard')
     # prepare the dictionary of values needed to create a record for the model
     @api.model
     def _prepare_item(self, line):

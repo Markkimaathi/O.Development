@@ -11,6 +11,7 @@
                 <group>
                     <field name="purchase_rfq_id" domain="[('partner_id', '=', supplier_id)]"/>
                     <field name="sync_data_planned"/>
+                    <field name="wiz_id"/>
                 </group>
                 <newline/>
                 <separator string="New RFQ details:"/>

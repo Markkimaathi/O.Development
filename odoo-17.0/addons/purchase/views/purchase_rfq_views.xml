@@ -1,9 +1,10 @@
 <odoo>
-    <record id="purchase_form_action" model="ir.actions.act_window">
-        <field name="name">Purchase Orders</field>
-        <field name="res_model">purchase.order</field>
-        <field name="view_mode">form</field>
+    <record id="purchase_order_form_action" model="ir.actions.act_window">
+    <field name="name">Purchase Orders</field>
+    <field name="res_model">purchase.order</field>
+    <field name="view_mode">form</field>
     </record>
+
 
     <record id="action_purchase_rfq" model="ir.actions.act_window">
         <field name="name">RFQs</field>
@@ -30,7 +31,7 @@
                             invisible="state in ['done','cancel']"/>
                     <button name="%(action_purchase_rfq)d" type="action" string="View RFQ" class="oe_highlight"
                             invisible="state not in 'done' "/>
-                    <button name="%(purchase_form_action)d" type="action" string="Create PO"
+                    <button name="%(purchase_order_form_action)d" type="action" string="Create PO"
                             class="oe_highlight"
                             invisible="state not in 'done' "/>
                     <button name="print_quotation" type="object" string="Print RFQ"
