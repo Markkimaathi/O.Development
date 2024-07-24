@@ -9,7 +9,7 @@
     'sequence': 50,
     'summary': 'Tender Management system',
     'description': """ Tender Management system """,
-    'depends': [],
+    'depends': ['base', 'product'],
     'data': [
         'data/ir_sequence_data.xml',
         "security/ir.model.access.csv",

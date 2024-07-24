@@ -26,9 +26,31 @@
         <field name="res_model">tender.management</field>
         <field name="view_mode">tree,form</field>
     </record>
+
     <menuitem id="menu_management_tenders_main"
               name="Tenders"
               parent="menu_tenders_master"
               action="action_tenders"
               sequence="5"/>
+
+
+    <menuitem id="menu_procurement_management_supplier_name"
+              name="Vendors"
+              parent="menu_tenders_vendors_master"
+              action="account.res_partner_action_supplier"
+              sequence="15"/>
+
+    <record id="product_normal_action_puchased" model="ir.actions.act_window">
+        <field name="name">Products</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="context">{}</field>
+
+    </record>
+
+    <menuitem name="Products" id="menu_procurement_partner_contact_form"
+              action="product_normal_action_puchased"
+              parent="menu_tenders_products_master"
+              sequence="20"/>
+
 </odoo>
