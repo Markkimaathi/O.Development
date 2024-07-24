@@ -1,0 +1,11 @@
+<odoo>
+    <!-- Auto generates reference numbers -->
+    <data noupdate="1">
+        <record id="seq_tender_reference" model="ir.sequence">
+            <field name="name">Tender Reference</field>
+            <field name="code">tender.management</field>
+            <field name="prefix">TR-</field>
+            <field name="padding">5</field>
+        </record>
+    </data>
+</odoo>
