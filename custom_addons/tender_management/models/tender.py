@@ -16,8 +16,8 @@ class TenderManagement(models.Model):
         ('submit', 'SUBMITTED'),
         ('approve', 'APPROVE'),
         ('approved', 'IN PROGRESS'),
-        ('done', 'Done'),
-        ('cancel', 'Cancel')], string='State', default='draft', required=True
+        ('done', 'DONE'),
+        ('cancel', 'CANCEL')], string='State', default='draft', required=True
     )
 
     def action_approve(self):

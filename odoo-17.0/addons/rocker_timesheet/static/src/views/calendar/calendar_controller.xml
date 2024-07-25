@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+    <t t-name="rocker_timesheet.RockerCalendarController" t-inherit="web.CalendarController" t-inherit-mode="primary">
+        <xpath expr="//Layout" position="inside">
+           <t t-set-slot="control-panel-selection-actions">
+               <div class="btn-group border" role="group" aria-label="Filter buttons">
+                   <nobr><label style="margin-left:5px; margin-top:5px; ">Filter:</label></nobr>
+                    <button class="btn btn-primary btn-all mx-1" t-on-click="all" type="button">All</button>
+                    <button class="btn btn-primary btn-billable mx-1" t-on-click="billable" type="button">Billable</button>
+                    <button class="btn btn-primary btn-nonbillable mx-1" t-on-click="nonbillable" type="button">Non_Billable</button>
+                    <button class="btn btn-primary btn-internal mx-1" t-on-click="internal" type="button">Internal</button>
+                    <button class="btn btn-primary btn-member mx-1" t-on-click="member" type="button">Member</button>
+                    <button class="btn btn-primary btn-mine mx-1" t-on-click="mine" type="button">Mine</button>
+            </div>
+           </t>
+       </xpath>>
+    </t>
+</templates>

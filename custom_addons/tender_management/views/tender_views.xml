@@ -21,7 +21,7 @@
                             class="oe_highlight"/>
                     <button name="action_approved" string="IN PROGRESS" type="object" invisible="state not in 'approve'"
                             class="oe_highlight"/>
-                    <button name="action_submit" string="SUBMITTED" type="object" invisible="state not in 'draft'"
+                    <button name="action_submit" string="SUBMIT" type="object" invisible="state not in 'draft'"
                             class="oe_highlight"/>
                     <button name="action_done" string="DONE" type="object" invisible="state not in 'approved'"
                             class="oe_highlight"/>
@@ -108,7 +108,7 @@
         <field name="name">Tenders</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">tender.management</field>
-        <field name="view_mode">tree,form,kanban</field>
+        <field name="view_mode">kanban,tree,form</field>
     </record>
 
     <menuitem id="menu_management_tenders_main" name="Tenders" parent="menu_tenders_master" action="action_tenders"

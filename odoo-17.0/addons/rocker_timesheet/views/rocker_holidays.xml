@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="rocker_holidays_view_form" model="ir.ui.view">
+            <field name="name">Rocker Import Public Holidays</field>
+            <field name="model">rocker.holidays</field>
+            <field name="arch" type="xml">
+                <form string="Import Public Holidays" create="false" delete="false" edit="1">
+                    <sheet>
+                        <div>
+                        <group col="2"  style="width: 100%%" >
+                            <field name="id" readonly="1" invisible="1"/>
+                            <field name="holiday_year" style="width: 30%%" readonly="id, '&gt;', 0"/>
+                            <field name="holiday_country" style="width: 30%%"  readonly="id, '&gt;', 0"/>
+
+                            <field name="date_executed" readonly="1" class="oe_inline"  />
+                            </group>
+                    </div>
+                        <button type="object" string=" Import Public Holidays" name="import_holidays" confirm="Import Public Holidays?"
+                                icon="fa-solid fa-gear" class="oe_highlight" invisible="id, '=', True"
+                                context="{'id': id, 'holiday_country': holiday_country, 'holiday_year': holiday_year}" />
+                        &#x2063;<button type="object" string=" Write Public Holidays to Odoo Calendar" name="export_holidays" confirm="Write Public Holidays? (Update and/or Insert)"
+                                icon="fa-gear" class="btn-danger oe_edit_only"
+                                context="{'id': id, 'write_local': write_local, 'holiday_country': holiday_country, 'holiday_year': holiday_year}" />
+                        &#x2063;<button type="object" string=" Clear Form" name="clear_form" confirm="Clear?"
+                                icon="fa-file-o" class="oe_highlight"
+                                context="{'id': id, 'write_local': write_local, 'holiday_country': holiday_country, 'holiday_year': holiday_year}" />
+                        <div/>
+                        <group>
+                        <field name="write_local" readonly="0" style="width: 20%%" />
+                             </group>
+                        <notebook>
+                        <page name="imported_holidays" string="Imported Holidays">
+                            <field name="notebook_ids">
+                        <tree string="Import Public Holidays" editable="bottom" create="0" >
+                            <field name="country_name" readonly="1" column_invisible="1"/>
+                            <field name="country_code" readonly="1" column_invisible="1"/>
+                            <field name="holiday_date" />
+                            <field name="name_local" />
+                            <field name="name_other" />
+                            <field name="holiday_type" readonly="1" column_invisible="1"/>
+                        </tree>
+                        </field>
+                        </page>
+                    </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="act_rocker_holidays_form" model="ir.actions.act_window">
+            <field name="name">Rocker Holidays</field>
+            <field name="res_model">rocker.holidays</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="rocker_holidays_view_form"/>
+            <field name="target">inline</field>
+        </record>
+
+
+        <menuitem id="rocker_holidays"
+                  name="Public Holidays"
+                  parent="rocker_timesheet_menu_timesheet"
+                  sequence="87"
+                  groups="hr_timesheet.group_timesheet_manager"/>
+
+        <menuitem id="rocker_holidays_form"
+                  name="Import Public Holidays"
+                  parent="rocker_holidays"
+                  action="act_rocker_holidays_form"
+                  sequence="1"
+                  groups="hr_timesheet.group_timesheet_manager"/>
+
+    </data>
+</odoo>
