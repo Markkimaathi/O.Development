@@ -96,6 +96,7 @@
             </p>
         </field>
     </record>
+
     <record id="rating_rating_action_livechat_report_view_kanban" model="ir.actions.act_window.view">
         <field name="sequence">1</field>
         <field name="view_mode">kanban</field>

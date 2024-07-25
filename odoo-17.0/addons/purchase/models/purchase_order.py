@@ -95,8 +95,8 @@ class PurchaseOrder(models.Model):
     currency_id = fields.Many2one('res.currency', 'Currency', required=True,
         default=lambda self: self.env.company.currency_id.id)
     state = fields.Selection([
-        ('draft', 'Draft'),
-        # ('sent', 'RFQ Sent'),
+        ('draft', 'RFQ'),
+        ('sent', 'RFQ Sent'),
         ('to approve', 'To Approve'),
         ('purchase', 'Purchase Order'),
         ('done', 'Locked'),
@@ -387,7 +387,7 @@ class PurchaseOrder(models.Model):
         )
         subtitles = [render_context['record'].name]
         # don't show price on RFQ mail
-        if self.state not in ['draft']:
+        if self.state not in ['draft', 'sent']:
             if self.date_order:
                 subtitles.append(_('%(amount)s due\N{NO-BREAK SPACE}%(date)s',
                                    amount=format_amount(self.env, self.amount_total, self.currency_id, lang_code=render_context.get('lang')),
@@ -454,7 +454,7 @@ class PurchaseOrder(models.Model):
                 lang = template._render_lang([ctx['default_res_id']])[ctx['default_res_id']]
 
         self = self.with_context(lang=lang)
-        if self.state in ['draft']:
+        if self.state in ['draft', 'sent']:
             ctx['model_description'] = _('Request for Quotation')
         else:
             ctx['model_description'] = _('Purchase Order')
@@ -471,8 +471,8 @@ class PurchaseOrder(models.Model):
         }
 
     def print_quotation(self):
-        self.write({'state': "purchase"})
-        return self.env.ref('purchase.action_report_purchase_order').report_action(self)
+        self.write({'state': "sent"})
+        return self.env.ref('purchase.report_purchase_quotation').report_action(self)
 
     def button_approve(self, force=False):
         self = self.filtered(lambda order: order._approval_allowed())
@@ -486,7 +486,7 @@ class PurchaseOrder(models.Model):
 
     def button_confirm(self):
         for order in self:
-            if order.state not in ['draft']:
+            if order.state not in ['draft', 'sent']:
                 continue
             order.order_line._validate_analytic_distribution()
             order._add_supplier_to_product()

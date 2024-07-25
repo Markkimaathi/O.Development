@@ -22,13 +22,6 @@
             <field name="default" eval="False"/>
             <field name="res_model">purchase.order</field>
         </record>
-        <!-- Sequences for purchase.rfq -->
-        <record id="seq_rfq_reference" model="ir.sequence">
-            <field name="name">Rfq Reference</field>
-            <field name="code">purchase.rfq</field>
-            <field name="prefix">RFQ-</field>
-            <field name="padding">5</field>
-        </record>
 
         <!-- Sequences for purchase.order -->
         <record id="seq_purchase_order" model="ir.sequence">
