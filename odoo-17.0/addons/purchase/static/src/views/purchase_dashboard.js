@@ -8,7 +8,7 @@ export class PurchaseDashBoard extends Component {
         this.action = useService("action");
 
         onWillStart(async () => {
-            this.purchaseData = await this.orm.call("purchase.order", "retrieve_dashboard");
+            this.purchaseData = await this.orm.call("purchase.rfq", "retrieve_dashboard");
         });
     }
 

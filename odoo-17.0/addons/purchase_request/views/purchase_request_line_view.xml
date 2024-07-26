@@ -336,9 +336,9 @@
         id="action_purchase_request_line_product_tree"
         model="ir.actions.act_window"
     >
-<!--        <field name="context">-->
-<!--            {'search_default_product_id': [active_id], 'default_product_id': active_id}-->
-<!--        </field>-->
+        <field name="context">
+            {'search_default_product_id': [active_id], 'default_product_id': active_id}
+        </field>
         <field name="name">Purchase Requests</field>
         <field name="res_model">purchase.request.line</field>
         <field name="binding_model_id" ref="product.model_product_product" />
@@ -374,7 +374,7 @@
     </record>
     <record id="purchase_order_line_form2_sub" model="ir.ui.view">
         <field name="name">purchase.order.line.form2</field>
-        <field name="model">purchase.order.line</field>
+        <field name="model">purchase.rfq.line</field>
         <field name="arch" type="xml">
             <form string="Purchase Order Lines" create="false" readonly="1">
                 <sheet>
@@ -449,7 +449,7 @@
     </record>
     <record id="purchase_order_line_tree_sub" model="ir.ui.view">
         <field name="name">purchase.order.line.tree</field>
-        <field name="model">purchase.order.line</field>
+        <field name="model">purchase.rfq.line</field>
         <field name="arch" type="xml">
             <tree name="Purchase Order Lines" create="true">
                 <field name="order_id" />
@@ -467,7 +467,7 @@
     </record>
     <record id="purchase_order_line_search_sub" model="ir.ui.view">
         <field name="name">purchase.order.line.search</field>
-        <field name="model">purchase.order.line</field>
+        <field name="model">purchase.rfq.line</field>
         <field name="arch" type="xml">
             <search string="Search Purchase Order Line">
                 <field name="order_id" />
@@ -581,10 +581,5 @@
         id="menu_purchase_request_line"
         parent="purchase.menu_procurement_management"
     />
-    <menuitem
-        id="menu_purchase_request_line_act"
-        sequence="20"
-        parent="menu_purchase_request"
-        action="purchase_request_line_form_action"
-    />
+
 </odoo>

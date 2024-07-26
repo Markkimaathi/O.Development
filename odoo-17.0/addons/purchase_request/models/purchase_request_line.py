@@ -94,7 +94,7 @@ class PurchaseRequestLine(models.Model):
         compute="_compute_purchased_qty",
     )
     purchase_lines = fields.Many2many(
-        comodel_name="purchase.order.line",
+        comodel_name="purchase.rfq.line",
         relation="purchase_request_purchase_order_line_rel",
         column1="purchase_request_line_id",
         column2="purchase_order_line_id",
@@ -105,7 +105,7 @@ class PurchaseRequestLine(models.Model):
     purchase_state = fields.Selection(
         compute="_compute_purchase_state",
         string="Purchase Status",
-        selection=lambda self: self.env["purchase.order"]._fields["state"].selection,
+        selection=lambda self: self.env["purchase.rfq"]._fields["state"].selection,
         store=True,
     )
     move_dest_ids = fields.One2many(

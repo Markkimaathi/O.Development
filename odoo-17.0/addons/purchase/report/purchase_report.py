@@ -17,7 +17,7 @@ class PurchaseReport(models.Model):
     date_order = fields.Datetime('Order Date', readonly=True)
     state = fields.Selection([
         ('draft', 'Draft RFQ'),
-        # ('sent', 'RFQ Sent'),
+        ('sent', 'RFQ Sent'),
         ('to approve', 'To Approve'),
         ('purchase', 'Purchase Order'),
         ('done', 'Done'),

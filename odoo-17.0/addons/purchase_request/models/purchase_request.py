@@ -9,7 +9,7 @@ _STATES = [
     ("to_approve", "To be approved"),
     ("approved", "Approved"),
     ("rejected", "Rejected"),
-    ("done", "Done"),
+    ("done", "Archived"),
 ]
 
 
@@ -53,11 +53,11 @@ class PurchaseRequest(models.Model):
                 rec.is_editable = True
 
     name = fields.Char(
-        string="PR Reference",
-        readonly=True,
-        copy=False,
-        default="New",
+        string="Request Reference",
+        required=True,
+        default=lambda self: _("PR Code"),
         tracking=True,
+        readonly=True,
     )
     is_name_editable = fields.Boolean(
         default=lambda self: self.env.user.has_group("base.group_no_one"),
@@ -99,7 +99,7 @@ class PurchaseRequest(models.Model):
     )
     line_ids = fields.One2many(
         comodel_name="purchase.request.line",
-            inverse_name="request_id",
+        inverse_name="request_id",
         string="Products to Purchase",
         readonly=False,
         copy=True,
@@ -162,14 +162,14 @@ class PurchaseRequest(models.Model):
         for rec in self:
             rec.purchase_count = len(rec.mapped("line_ids.purchase_lines.order_id"))
 
-    def action_view_purchase_request(self):
+    def action_view_purchase_order(self):
         action = self.env["ir.actions.actions"]._for_xml_id("purchase.purchase_rfq")
         lines = self.mapped("line_ids.purchase_lines.order_id")
         if len(lines) > 1:
             action["domain"] = [("id", "in", lines.ids)]
         elif lines:
             action["views"] = [
-                (self.env.ref("purchase.purchase_rfq_form").id, "form")
+                (self.env.ref("purchase.purchase_order_form").id, "form")
             ]
             action["res_id"] = lines.id
         return action

@@ -9,9 +9,9 @@ from odoo.exceptions import UserError
 from odoo.tools import get_lang
 
 
-class PurchaseRequestLineMakePurchaseRfq(models.TransientModel):
-    _name = "purchase.request.line.make.purchase.rfq"
-    _description = "Purchase Request Line Make Purchase RFQ"
+class PurchaseRequestLineMakePurchaseOrder(models.TransientModel):
+    _name = "purchase.request.line.make.purchase.order"
+    _description = "Purchase Request Line Make Purchase Order"
 
     supplier_id = fields.Many2one(
         comodel_name="res.partner",
@@ -20,26 +20,23 @@ class PurchaseRequestLineMakePurchaseRfq(models.TransientModel):
         context={"res_partner_search_mode": "supplier"},
     )
     item_ids = fields.One2many(
-        comodel_name="purchase.request.line.make.purchase.rfq.item",
+        comodel_name="purchase.request.line.make.purchase.order.item",
         inverse_name="wiz_id",
         string="Items",
     )
-    purchase_rfq_id = fields.Many2one(
+    purchase_order_id = fields.Many2one(
         comodel_name="purchase.rfq",
-        readonly=True,
-        copy=False,
-        string="Request For Quotation",
+        string="RFQ",
         domain=[("state", "=", "draft")],
     )
     sync_data_planned = fields.Boolean(
-        string="Match existing RFQ lines by Scheduled Date",
+        string="Match existing PO lines by Scheduled Date",
         help=(
-            "When checked, RFQ lines on the selected purchase order are only reused "
+            "When checked, PO lines on the selected purchase order are only reused "
             "if the scheduled date matches as well."
         ),
     )
-    wiz_id = fields.Many2one('purchase.request.line.make.purchase.rfq.item', string='Wizard')
-    # prepare the dictionary of values needed to create a record for the model
+
     @api.model
     def _prepare_item(self, line):
         return {
@@ -51,12 +48,11 @@ class PurchaseRequestLineMakePurchaseRfq(models.TransientModel):
             "product_uom_id": line.product_uom_id.id,
         }
 
-    # Ensures the request is not completed or in an unapproved state
     @api.model
     def _check_valid_request_line(self, request_line_ids):
         picking_type = False
         company_id = False
-        # Ensures the request is not completed or in an unapproved state
+
         for line in self.env["purchase.request.line"].browse(request_line_ids):
             if line.request_id.state == "done":
                 raise UserError(_("The purchase has already been completed."))
@@ -67,13 +63,13 @@ class PurchaseRequestLineMakePurchaseRfq(models.TransientModel):
 
             if line.purchase_state == "done":
                 raise UserError(_("The purchase has already been completed."))
-            # Ensures all lines are from the same company.
+
             line_company_id = line.company_id and line.company_id.id or False
             if company_id is not False and line_company_id != company_id:
                 raise UserError(_("You have to select lines from the same company."))
             else:
                 company_id = line_company_id
-            # Ensures all lines have the same picking type.
+
             line_picking_type = line.request_id.picking_type_id or False
             if not line_picking_type:
                 raise UserError(_("You have to enter a Picking Type."))
@@ -83,18 +79,17 @@ class PurchaseRequestLineMakePurchaseRfq(models.TransientModel):
                 )
             else:
                 picking_type = line_picking_type
-    #  checks if the purchase request lines belong to different procurement group
+
     @api.model
     def check_group(self, request_lines):
         if len(list(set(request_lines.mapped("request_id.group_id")))) > 1:
             raise UserError(
                 _(
-                    "You cannot create a single purchase rfq from "
+                    "You cannot create a single purchase order from "
                     "purchase requests that have different procurement group."
                 )
             )
-    # Checks the validity and groups of the request lines.
-    # Converts the lines into a format suitable for RFQ creation using _prepare_item.
+
     @api.model
     def get_items(self, request_line_ids):
         request_line_obj = self.env["purchase.request.line"]
@@ -105,9 +100,7 @@ class PurchaseRequestLineMakePurchaseRfq(models.TransientModel):
         for line in request_lines:
             items.append([0, 0, self._prepare_item(line)])
         return items
-    # Determines the active model and fetches the relevant request lines.
-    # Prepares the items for the RFQ.
-    # Sets the default supplier if only one supplier is found.
+
     @api.model
     def default_get(self, fields):
         res = super().default_get(fields)
@@ -128,17 +121,16 @@ class PurchaseRequestLineMakePurchaseRfq(models.TransientModel):
         if len(supplier_ids) == 1:
             res["supplier_id"] = supplier_ids[0]
         return res
-    # Ensures a supplier is provided.
-    # Sets the various fields required for the RFQ.
+
     @api.model
-    def _prepare_purchase_rfq(self, picking_type, group_id, company, origin):
+    def _prepare_purchase_order(self, picking_type, group_id, company, name):
         if not self.supplier_id:
             raise UserError(_("Enter a supplier."))
         supplier = self.supplier_id
         data = {
-            "origin": origin,
+            "origin": name,
             "partner_id": self.supplier_id.id,
-            # "payment_term_id": self.supplier_id.property_supplier_payment_term_id.id,
+            "payment_term_id": self.supplier_id.property_supplier_payment_term_id.id,
             "fiscal_position_id": supplier.property_account_position_id
             and supplier.property_account_position_id.id
             or False,
@@ -147,19 +139,18 @@ class PurchaseRequestLineMakePurchaseRfq(models.TransientModel):
             "group_id": group_id.id,
         }
         return data
-    #  creates an allocation record between the RFQ line and the purchase request line
-    def create_allocation(self, rfq_line, pr_line, new_qty, alloc_uom):
+
+    def create_allocation(self, po_line, pr_line, new_qty, alloc_uom):
         vals = {
             "requested_product_uom_qty": new_qty,
             "product_uom_id": alloc_uom.id,
             "purchase_request_line_id": pr_line.id,
-            "purchase_line_id": rfq_line.id,
+            "purchase_line_id": po_line.id,
         }
         return self.env["purchase.request.allocation"].create(vals)
-    # Ensures a product is selected.
-    # Computes the quantity and other necessary details for the RFQ line.
+
     @api.model
-    def _prepare_purchase_rfq_line(self, rfq, item):
+    def _prepare_purchase_order_line(self, po, item):
         if not item.product_id:
             raise UserError(_("Please select a product for all lines"))
         product = item.product_id
@@ -170,11 +161,11 @@ class PurchaseRequestLineMakePurchaseRfq(models.TransientModel):
             item.product_qty, product.uom_po_id or product.uom_id
         )
         # Suggest the supplier min qty as it's done in Odoo core
-        min_qty = item.line_id._get_supplier_min_qty(product, rfq.partner_id)
+        min_qty = item.line_id._get_supplier_min_qty(product, po.partner_id)
         qty = max(qty, min_qty)
         date_required = item.line_id.date_required
         return {
-            "order_id": rfq.id,
+            "order_id": po.id,
             "product_id": product.id,
             "product_uom": product.uom_po_id.id or product.uom_id.id,
             "price_unit": 0.0,
@@ -186,7 +177,7 @@ class PurchaseRequestLineMakePurchaseRfq(models.TransientModel):
             ),
             "move_dest_ids": [(4, x.id) for x in item.line_id.move_dest_ids],
         }
-    #  fetches the product name considering the supplier's language settings and other context
+
     @api.model
     def _get_purchase_line_name(self, order, line):
         """Fetch the product name as per supplier settings"""
@@ -199,13 +190,13 @@ class PurchaseRequestLineMakePurchaseRfq(models.TransientModel):
         if product_lang.description_purchase:
             name += "\n" + product_lang.description_purchase
         return name
-    # prepares the domain for searching existing RFQ lines that match the current item
+
     @api.model
-    def _get_rfq_line_search_domain(self, rfq, item):
-        vals = self._prepare_purchase_rfq_line(rfq, item)
-        name = self._get_purchase_line_name(rfq, item)
+    def _get_order_line_search_domain(self, order, item):
+        vals = self._prepare_purchase_order_line(order, item)
+        name = self._get_purchase_line_name(order, item)
         order_line_data = [
-            ("order_id", "=", rfq.id),
+            ("order_id", "=", order.id),
             ("name", "=", name),
             ("product_id", "=", item.product_id.id),
             ("product_uom", "=", vals["product_uom"]),
@@ -225,14 +216,11 @@ class PurchaseRequestLineMakePurchaseRfq(models.TransientModel):
         if not item.product_id:
             order_line_data.append(("name", "=", item.name))
         return order_line_data
-    # Checks quantities and ensures valid data.
-    # Prepares RFQ data and lines.
-    # Combines lines where possible to avoid duplication.
-    # Adjusts quantities and dates as needed.
-    def make_purchase_rfq(self):
+
+    def make_purchase_order(self):
         res = []
         purchase_obj = self.env["purchase.rfq"]
-        rfq_line_obj = self.env["purchase.rfq.line"]
+        po_line_obj = self.env["purchase.rfq.line"]
         pr_line_obj = self.env["purchase.request.line"]
         user_tz = pytz.timezone(self.env.user.tz or "UTC")
         purchase = False
@@ -241,22 +229,22 @@ class PurchaseRequestLineMakePurchaseRfq(models.TransientModel):
             line = item.line_id
             if item.product_qty <= 0.0:
                 raise UserError(_("Enter a positive quantity."))
-            if self.purchase_rfq_id:
-                purchase = self.purchase_rfq_id
+            if self.purchase_order_id:
+                purchase = self.purchase_order_id
             if not purchase:
-                rfq_data = self._prepare_purchase_rfq(
+                po_data = self._prepare_purchase_order(
                     line.request_id.picking_type_id,
                     line.request_id.group_id,
                     line.company_id,
-                    line.origin,
+                    line.request_id.name,
                 )
-                purchase = purchase_obj.create(rfq_data)
+                purchase = purchase_obj.create(po_data)
 
-            # Look for any other PO line in the selected rfq with same
+            # Look for any other PO line in the selected PO with same
             # product and UoM to sum quantities instead of creating a new
-            # rfq line
+            # po line
             domain = self._get_order_line_search_domain(purchase, item)
-            available_rfq_lines = rfq_line_obj.search(domain)
+            available_po_lines = po_line_obj.search(domain)
             new_pr_line = True
             # If Unit of Measure is not set, update from wizard.
             if not line.product_uom_id:
@@ -264,43 +252,43 @@ class PurchaseRequestLineMakePurchaseRfq(models.TransientModel):
             # Allocation UoM has to be the same as PR line UoM
             alloc_uom = line.product_uom_id
             wizard_uom = item.product_uom_id
-            if available_rfq_lines and not item.keep_description:
+            if available_po_lines and not item.keep_description:
                 new_pr_line = False
-                rfq_line = available_rfq_lines[0]
-                rfq_line.purchase_request_lines = [(4, line.id)]
-                rfq_line.move_dest_ids |= line.move_dest_ids
-                rfq_line_product_uom_qty = rfq_line.product_uom._compute_quantity(
-                    rfq_line.product_uom_qty, alloc_uom
+                po_line = available_po_lines[0]
+                po_line.purchase_request_lines = [(4, line.id)]
+                po_line.move_dest_ids |= line.move_dest_ids
+                po_line_product_uom_qty = po_line.product_uom._compute_quantity(
+                    po_line.product_uom_qty, alloc_uom
                 )
                 wizard_product_uom_qty = wizard_uom._compute_quantity(
                     item.product_qty, alloc_uom
                 )
-                all_qty = min(rfq_line_product_uom_qty, wizard_product_uom_qty)
-                self.create_allocation(rfq_line, line, all_qty, alloc_uom)
+                all_qty = min(po_line_product_uom_qty, wizard_product_uom_qty)
+                self.create_allocation(po_line, line, all_qty, alloc_uom)
             else:
-                rfq_line_data = self._prepare_purchase_rfq_line(purchase, item)
+                po_line_data = self._prepare_purchase_order_line(purchase, item)
                 if item.keep_description:
-                    rfq_line_data["name"] = item.name
-                rfq_line = rfq_line_obj.create(rfq_line_data)
-                rfq_line_product_uom_qty = rfq_line.product_uom._compute_quantity(
-                    rfq_line.product_uom_qty, alloc_uom
+                    po_line_data["name"] = item.name
+                po_line = po_line_obj.create(po_line_data)
+                po_line_product_uom_qty = po_line.product_uom._compute_quantity(
+                    po_line.product_uom_qty, alloc_uom
                 )
                 wizard_product_uom_qty = wizard_uom._compute_quantity(
                     item.product_qty, alloc_uom
                 )
-                all_qty = min(rfq_line_product_uom_qty, wizard_product_uom_qty)
-                self.create_allocation(rfq_line, line, all_qty, alloc_uom)
+                all_qty = min(po_line_product_uom_qty, wizard_product_uom_qty)
+                self.create_allocation(po_line, line, all_qty, alloc_uom)
             # TODO: Check propagate_uom compatibility:
             new_qty = pr_line_obj._calc_new_qty(
-                line, rfq_line=rfq_line, new_pr_line=new_pr_line
+                line, po_line=po_line, new_pr_line=new_pr_line
             )
-            rfq_line.product_qty = new_qty
+            po_line.product_qty = new_qty
             # The quantity update triggers a compute method that alters the
             # unit price (which is what we want, to honor graduate pricing)
             # but also the scheduled date which is what we don't want.
             date_required = item.line_id.date_required
             # we enforce to save the datetime value in the current tz of the user
-            rfq_line.date_planned = (
+            po_line.date_planned = (
                 user_tz.localize(
                     datetime(date_required.year, date_required.month, date_required.day)
                 )
@@ -320,20 +308,19 @@ class PurchaseRequestLineMakePurchaseRfq(models.TransientModel):
         }
 
 
-class PurchaseRequestLineMakePurchaseRfqItem(models.TransientModel):
-    _name = "purchase.request.line.make.purchase.rfq.item"
-    _description = "Purchase Request Line Make Purchase RFQ Item"
+class PurchaseRequestLineMakePurchaseOrderItem(models.TransientModel):
+    _name = "purchase.request.line.make.purchase.order.item"
+    _description = "Purchase Request Line Make Purchase Order Item"
 
     wiz_id = fields.Many2one(
-        comodel_name="purchase.request.line.make.purchase.rfq",
+        comodel_name="purchase.request.line.make.purchase.order",
         string="Wizard",
         required=True,
         ondelete="cascade",
         readonly=True,
     )
     line_id = fields.Many2one(
-        comodel_name="purchase.request.line",
-        string="Purchase Request Line"
+        comodel_name="purchase.request.line", string="Purchase Request Line"
     )
     request_id = fields.Many2one(
         comodel_name="purchase.request",
@@ -355,8 +342,10 @@ class PurchaseRequestLineMakePurchaseRfqItem(models.TransientModel):
         comodel_name="uom.uom", string="UoM", required=True
     )
     keep_description = fields.Boolean(
-        string="Copy descriptions to new RFQ",
-        help="Set true if you want to keep the descriptions provided in the wizard in the new RFQ.",
+        string="Copy descriptions to new PO",
+        help="Set true if you want to keep the "
+        "descriptions provided in the "
+        "wizard in the new PO.",
     )
 
     @api.onchange("product_id")

@@ -77,9 +77,8 @@ class PurchaseOrder(models.Model):
     name = fields.Char('Order Reference', required=True, index='trigram', copy=False, default='New')
     priority = fields.Selection(
         [('0', 'Normal'), ('1', 'Urgent')], 'Priority', default='0', index=True)
-    origin = fields.Char('Source Document', copy=False,
-        help="Reference of the document that generated this purchase order "
-             "request (e.g. a sales order)")
+    origin = fields.Char('Source RFQ', copy=False,
+        help="Reference of the RFQ that generated this purchase order")
     partner_ref = fields.Char('Vendor Reference', copy=False,
         help="Reference of the sales order or bid sent by the vendor. "
              "It's used to do the matching when you receive the "
@@ -95,8 +94,8 @@ class PurchaseOrder(models.Model):
     currency_id = fields.Many2one('res.currency', 'Currency', required=True,
         default=lambda self: self.env.company.currency_id.id)
     state = fields.Selection([
-        ('draft', 'Draft'),
-        # ('sent', 'RFQ Sent'),
+        ('draft', 'RFQ'),
+        ('sent', 'RFQ Sent'),
         ('to approve', 'To Approve'),
         ('purchase', 'Purchase Order'),
         ('done', 'Locked'),
@@ -148,6 +147,7 @@ class PurchaseOrder(models.Model):
 
     receipt_reminder_email = fields.Boolean('Receipt Reminder Email', compute='_compute_receipt_reminder_email')
     reminder_date_before_receipt = fields.Integer('Days Before Receipt', compute='_compute_receipt_reminder_email')
+    source_pr = fields.Char(string='Source PR')
 
     @api.constrains('company_id', 'order_line')
     def _check_order_line_company_id(self):
@@ -387,7 +387,7 @@ class PurchaseOrder(models.Model):
         )
         subtitles = [render_context['record'].name]
         # don't show price on RFQ mail
-        if self.state not in ['draft']:
+        if self.state not in ['draft', 'sent']:
             if self.date_order:
                 subtitles.append(_('%(amount)s due\N{NO-BREAK SPACE}%(date)s',
                                    amount=format_amount(self.env, self.amount_total, self.currency_id, lang_code=render_context.get('lang')),
@@ -454,7 +454,7 @@ class PurchaseOrder(models.Model):
                 lang = template._render_lang([ctx['default_res_id']])[ctx['default_res_id']]
 
         self = self.with_context(lang=lang)
-        if self.state in ['draft']:
+        if self.state in ['draft', 'sent']:
             ctx['model_description'] = _('Request for Quotation')
         else:
             ctx['model_description'] = _('Purchase Order')
@@ -471,8 +471,8 @@ class PurchaseOrder(models.Model):
         }
 
     def print_quotation(self):
-        self.write({'state': "purchase"})
-        return self.env.ref('purchase.action_report_purchase_order').report_action(self)
+        self.write({'state': "sent"})
+        return self.env.ref('purchase.report_purchase_quotation').report_action(self)
 
     def button_approve(self, force=False):
         self = self.filtered(lambda order: order._approval_allowed())
@@ -480,13 +480,41 @@ class PurchaseOrder(models.Model):
         self.filtered(lambda p: p.company_id.po_lock == 'lock').write({'state': 'done'})
         return {}
 
+    # def button_draft(self):
+    #     self.write({'state': 'draft'})
+    #     return {}
     def button_draft(self):
-        self.write({'state': 'draft'})
+        rfq_id = False
+        for po in self:
+            # Check if the origin field has the reference to the RFQ
+            if po.origin:
+                rfq = self.env['purchase.rfq'].search([('name', '=', po.origin)], limit=1)
+                if rfq:
+                    # Set the state of the RFQ to 'draft'
+                    rfq.write({'state': 'draft'})
+                    rfq.write({'po_created': ''})
+                    rfq_id = rfq.id
+
+            # Delete the current Purchase Order record
+            po.unlink()
+
+        if rfq_id:
+            # Return an action to open the RFQ form view
+            action = {
+                'type': 'ir.actions.act_window',
+                'name': 'Request for Quotation',
+                'res_model': 'purchase.rfq',
+                'view_mode': 'form',
+                'res_id': rfq_id,
+                'target': 'current',
+            }
+            return action
+
         return {}
 
     def button_confirm(self):
         for order in self:
-            if order.state not in ['draft']:
+            if order.state not in ['draft', 'sent']:
                 continue
             order.order_line._validate_analytic_distribution()
             order._add_supplier_to_product()

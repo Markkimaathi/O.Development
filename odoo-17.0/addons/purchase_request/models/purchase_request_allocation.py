@@ -32,7 +32,7 @@ class PurchaseRequestAllocation(models.Model):
     )
     purchase_line_id = fields.Many2one(
         string="Purchase Line",
-        comodel_name="purchase.order.line",
+        comodel_name="purchase.rfq.line",
         copy=True,
         ondelete="cascade",
         help="Service Purchase Order Line",

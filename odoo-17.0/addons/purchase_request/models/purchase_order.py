@@ -5,7 +5,7 @@ from odoo import _, api, exceptions, fields, models
 
 
 class PurchaseOrder(models.Model):
-    _inherit = "purchase.order"
+    _inherit = "purchase.rfq"
 
     def _purchase_request_confirm_message_content(self, request, request_dict=None):
         self.ensure_one()
@@ -98,7 +98,7 @@ class PurchaseOrder(models.Model):
 
 
 class PurchaseOrderLine(models.Model):
-    _inherit = "purchase.order.line"
+    _inherit = "purchase.rfq.line"
 
     purchase_request_lines = fields.Many2many(
         comodel_name="purchase.request.line",

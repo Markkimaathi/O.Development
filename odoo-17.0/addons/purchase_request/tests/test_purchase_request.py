@@ -102,7 +102,7 @@ class TestPurchaseRequest(TransactionCase):
         wiz_id = self.wiz.with_context(
             active_model="purchase.request.line", active_ids=[purchase_request_line.id]
         ).create(vals)
-        wiz_id.make_purchase_rfq()
+        wiz_id.make_purchase_order()
         # Unlink purchase_lines from state approved
         with self.assertRaises(exceptions.UserError):
             purchase_request_line.unlink()
