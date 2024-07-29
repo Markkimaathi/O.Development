@@ -36,8 +36,9 @@
                 </header>
                 <sheet>
                     <group>
-                        <field name="name" default_focus="1"/>
                         <field name="ref"/>
+                        <field name="name" default_focus="1" />
+                        <field name="partner_id"/>
                         <field name="date_created"/>
                         <field name="date_bid_to_end"/>
                     </group>
