@@ -19,6 +19,16 @@ class TenderManagement(models.Model):
         ('done', 'DONE'),
         ('cancel', 'CANCEL')], string='State', default='draft', required=True
     )
+    days_to_deadline= fields.Integer(string='Days To Deadline', compute='_compute_days')
+    @api.depends('date_created', 'date_bid_to_end')
+    def _compute_days(self):
+        for rec in self:
+            today = date.today()
+            if rec.date_bid_to_end:
+                days_difference = (rec.date_bid_to_end - today).days
+                rec.days_to_deadline = days_difference
+            else:
+                rec.days_to_deadline = 0
 
     def action_approve(self):
        for rec in self:

@@ -120,11 +120,11 @@
                             <field name="assigned_to" readonly="is_editable == False" />
                         </group>
                         <group>
-                            <field
-                                name="origin"
-                                class="oe_inline"
-                                readonly="is_editable == False"
-                            />
+<!--                            <field-->
+<!--                                name="origin"-->
+<!--                                class="oe_inline"-->
+<!--                                readonly="is_editable == False"-->
+<!--                            />-->
                             <field name="description" readonly="is_editable == False" />
                             <field name="group_id" readonly="is_editable == False" />
                         </group>
