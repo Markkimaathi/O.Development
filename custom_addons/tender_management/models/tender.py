@@ -61,3 +61,11 @@ class TenderManagement(models.Model):
         if vals.get('ref', 'New') == 'New':
             vals['ref'] = self.env['ir.sequence'].next_by_code('tender.management') or 'New'
         return super(TenderManagement, self).create(vals)
+
+    class TenderManagementLine(models.Model):
+        _name='tender.management.line'
+        _description = "Tender Management Line"
+
+        product_id=fields.Many2one('product.product', string='Products')
+
+
