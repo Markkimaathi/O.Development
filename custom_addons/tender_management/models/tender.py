@@ -7,7 +7,7 @@ class TenderManagement(models.Model):
     _description = "Tender Management"
     _inherit = ['mail.thread', 'mail.activity.mixin',]
 
-    name = fields.Char(string="Tender")
+    name = fields.Many2one('res.users', string="Purchase Representative")
     ref = fields.Char(string="Reference", readonly=True, copy=False, default='New')
     date_created = fields.Date(string='Start Date', default=fields.Datetime.now)
     date_bid_to_end = fields.Date(string='End Date', default=fields.Date.context_today)
