@@ -20,6 +20,9 @@ class TenderManagement(models.Model):
         ('cancel', 'CANCEL')], string='State', default='draft', required=True
     )
     days_to_deadline= fields.Integer(string='Days To Deadline', compute='_compute_days')
+    bid_ids = fields.One2many('tender.bid', 'tender_id', string="Bids")
+    bid_count = fields.Integer(string='Bid Count', compute='_compute_bid_count')
+
     @api.depends('date_created', 'date_bid_to_end')
     def _compute_days(self):
         for rec in self:
@@ -29,7 +32,10 @@ class TenderManagement(models.Model):
                 rec.days_to_deadline = days_difference
             else:
                 rec.days_to_deadline = 0
-
+    @api.depends('bid_ids')
+    def _compute_bid_count(self):
+        for tender in self:
+            tender.bid_count = len(tender.bid_ids)
     def action_approve(self):
        for rec in self:
            rec.state = 'approve'
