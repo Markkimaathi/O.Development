@@ -52,11 +52,18 @@
                     <notebook>
                         <page string="Products" name="products">
                             <field name="tender_management_line_ids">
-                                <tree string="Purchase Order Lines" editable="bottom">
+                                <tree string="Tender Management Line Ids" editable="bottom">
                                     <field name="product_id"/>
                                     <field name="price_unit"/>
                                     <field name="qty"/>
                                 </tree>
+                                <form>
+                                    <group>
+                                        <field name="product_id"/>
+                                        <field name="price_unit"/>
+                                        <field name="qty"/>
+                                    </group>
+                                </form>
                             </field>
                         </page>
                     </notebook>

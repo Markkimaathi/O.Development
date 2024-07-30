@@ -52,7 +52,7 @@ class TenderManagement(models.Model):
             rec.state = 'draft'
     def action_approved(self):
         for rec in self:
-            rec.state = 'approved'
+            rec.state = 'approved'  
     def action_submit(self):
         for rec in self:
             rec.state = 'submit'
@@ -67,7 +67,7 @@ class TenderManagement(models.Model):
         _name='tender.management.line'
         _description = "Tender Management Line"
 
-        product_id = fields.Many2many('product.product', string='Products')
+        product_id = fields.Many2one('product.product', string='Products')
         price_unit = fields.Float(string='Price')
         qty = fields.Integer(string='Quantity')
         tender_management_id=fields.Many2one('tender.management',string='Tender Management')
