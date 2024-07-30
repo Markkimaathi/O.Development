@@ -83,66 +83,42 @@
         <field name="model">tender.management</field>
         <field name="arch" type="xml">
             <kanban>
-                <field name="name"/>
-                <field name="date_created"/>
-                <field name="days_to_deadline"/>
-                <field name="date_bid_to_end"/>
+    <field name="name"/>
+    <field name="formatted_date"/>
+    <field name="days_to_deadline"/>
+    <field name="date_bid_to_end"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_project_kanban_card">
+                        <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
                             <div class="o_kanban_record_top" style="display: flex;">
                                 <div class="oe_kanban_bottom_left"
-                                     style="flex: 1; background-color: #00A09D; color: white; padding: 8px;">
-                                    <strong>
-                                        <field name="date_created"/>
-                                    </strong>
-                                    <br/>
-                                    <strong>
+                         style="flex: 0 0 80px; background-color: #00A09D; color: white; padding: 8px; text-align: center;">
+                        <weak>
+                            <t t-esc="record.formatted_date.raw_value.split('\n')[0].trim()"/>
+                        </weak>
+                        <br/>
+                        <weak>
+                            <t t-esc="record.formatted_date.raw_value.split('\n')[1].trim()"/>
+                        </weak>
+                        <br/>
+                                    <weak>
                                         <field name="days_to_deadline"/>
-                                        Submissions
-                                    </strong>
-                                </div>
-                                <div class="oe_kanban_bottom_left"
-                                     style="flex: 1; background-color: #00A09D; color: white; padding: 8px;">
-                                    <strong>
-                                        <field name="date_created"/>
-                                    </strong>
+                                    </weak>
                                     <br/>
-                                    <strong>
-                                        <field name="days_to_deadline"/>
-                                        Submissions
-                                    </strong>
+                                    Submissions
                                 </div>
                                 <div class="o_kanban_record_headings" style="flex: 1; padding: 8px;">
                                     <strong class="o_kanban_record_title">
                                         <field name="name"/>
                                     </strong>
                                     <br/>
+<!--                                    <field name="country"/>-->
+<!--                                    <br/>-->
                                     <small>Deadline:
                                         <field name="date_bid_to_end"/>
                                     </small>
                                 </div>
-                                <div class="o_dropdown_kanban dropdown" groups="base.group_user">
-                                    <a class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" href="#"
-                                       role="button">
-                                        <span class="fa fa-ellipsis-v"/>
-                                    </a>
-                                    <div class="dropdown-menu" role="menu">
-                                        <t t-if="widget.editable">
-                                            <a type="edit" class="dropdown-item">Edit</a>
-                                        </t>
-                                        <t t-if="widget.deletable">
-                                            <a type="delete" class="dropdown-item">Delete</a>
-                                        </t>
-                                    </div>
-                                </div>
                             </div>
-                            <!--                            <div class="o_kanban_record_bottom" style="padding: 8px;">-->
-                            <!--                                <strong>-->
-                            <!--                                    <field name="days_to_deadline"/>-->
-                            <!--                                    days remaining-->
-                            <!--                                </strong>-->
-                            <!--                            </div>-->
                         </div>
                     </t>
                 </templates>
