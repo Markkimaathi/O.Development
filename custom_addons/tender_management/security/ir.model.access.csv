@@ -1,3 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access.tender.management,access_tender_management,tender_management.model_tender_management,base.group_user,1,1,1,1
+access.tender.management.line,access_tender_management_line,tender_management.model_tender_management_line,base.group_user,1,1,1,1
 access.tender.bid,access_tender_bid,tender_management.model_tender_bid,base.group_user,1,1,1,1

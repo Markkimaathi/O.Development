@@ -105,7 +105,7 @@
                     <field name="partner_id" filters="1"/>
                 </calendar>
             </field>
-        </record>a
+        </record>
         <record model="ir.ui.view" id="purchase_order_pivot">
             <field name="name">purchase.order.pivot</field>
             <field name="model">purchase.order</field>
@@ -131,7 +131,7 @@
             <field name="name">purchase.order.form</field>
             <field name="model">purchase.order</field>
             <field name="arch" type="xml">
-                <form string="Purchase Order" class="o_purchase_order">
+                <form string="Purchase Order" class="o_purchase_order" create="0">
                 <header>
                     <button name="action_rfq_send" invisible="state != 'draft'" string="Send by Email" type="object" context="{'send_rfq':True}" class="oe_highlight" data-hotkey="g"/>
                     <button name="print_quotation" string="Print RFQ" type="object" invisible="state != 'draft'" class="oe_highlight" groups="base.group_user" data-hotkey="k"/>
