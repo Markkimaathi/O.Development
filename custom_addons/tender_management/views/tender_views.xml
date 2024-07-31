@@ -39,9 +39,15 @@
                         <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
                             <field name="is_active" widget="boolean_button"/>
                         </button>
-                          <button name="toggle_website_publish" type="object" class="oe_stat_button" icon="fa-globe">
+                        <button name="toggle_website_publish" type="object" class="oe_stat_button" icon="fa-globe">
                             <field name="website_published" widget="boolean_button"
                                    options='{"terminology": {"string_true": "Published", "string_false": "Unpublished"}}'/>
+                        </button>
+<!--                        <button name="action_view_bids" type="object" class="oe_stat_button" icon="fa-list">-->
+<!--                            <field name="bid_count" widget="statinfo" string="Bids"/>-->
+<!--                        </button>-->
+                        <button class="oe_stat_button" icon="fa-star">
+                            <field name="rank" widget="statinfo" string="Rank"/>
                         </button>
                     </div>
                     <group>

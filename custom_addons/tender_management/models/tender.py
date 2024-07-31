@@ -22,7 +22,7 @@ class TenderManagement(models.Model):
     )
     days_to_deadline= fields.Integer(string='Days To Deadline', compute='_compute_days')
     bid_ids = fields.One2many('tender.bid', 'tender_id', string="Bids")
-    bid_count = fields.Integer(string='Bid Count', compute='_compute_bid_count')
+    bid_count = fields.Integer(string='Bid Count', compute='_compute_bid_count', store=True)
     tender_management_line_ids=fields.One2many('tender.management.line','tender_management_id',string='Tender '
                                                                                                       'Management Line')
     formatted_date = fields.Char(string='Formatted Date', compute='_compute_formatted_date')
