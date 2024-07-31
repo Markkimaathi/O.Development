@@ -44,24 +44,21 @@
                         <field name="date_bid_to_end"/>
                         <field name="days_to_deadline"/>
                     </group>
-                    <!--                        <group>-->
-                    <!--                            <field name=""/>-->
-                    <!--                        </group>-->
-
-                    <!--                    </group>-->
                     <notebook>
                         <page string="Products" name="products">
                             <field name="tender_management_line_ids">
                                 <tree string="Tender Management Line Ids" editable="bottom">
                                     <field name="product_id"/>
-                                    <field name="price_unit"/>
-                                    <field name="qty"/>
+<!--                                    <field name="default_code"/>-->
+                                    <field name="description"/>
+                                    <field name="product_uom_id"/>
                                 </tree>
                                 <form>
                                     <group>
                                         <field name="product_id"/>
-                                        <field name="price_unit"/>
-                                        <field name="qty"/>
+<!--                                        <field name="default_code"/>-->
+                                        <field name="description"/>
+                                        <field name="product_uom_id"/>
                                     </group>
                                 </form>
                             </field>
@@ -83,24 +80,24 @@
         <field name="model">tender.management</field>
         <field name="arch" type="xml">
             <kanban>
-    <field name="name"/>
-    <field name="formatted_date"/>
-    <field name="days_to_deadline"/>
-    <field name="date_bid_to_end"/>
+                <field name="name"/>
+                <field name="formatted_date"/>
+                <field name="days_to_deadline"/>
+                <field name="date_bid_to_end"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
                             <div class="o_kanban_record_top" style="display: flex;">
                                 <div class="oe_kanban_bottom_left"
-                         style="flex: 0 0 80px; background-color: #00A09D; color: white; padding: 8px; text-align: center;">
-                        <weak>
-                            <t t-esc="record.formatted_date.raw_value.split('\n')[0].trim()"/>
-                        </weak>
-                        <br/>
-                        <weak>
-                            <t t-esc="record.formatted_date.raw_value.split('\n')[1].trim()"/>
-                        </weak>
-                        <br/>
+                                     style="flex: 0 0 80px; background-color: #00A09D; color: white; padding: 8px; text-align: center;">
+                                    <weak>
+                                        <t t-esc="record.formatted_date.raw_value.split('\n')[0].trim()"/>
+                                    </weak>
+                                    <br/>
+                                    <weak>
+                                        <t t-esc="record.formatted_date.raw_value.split('\n')[1].trim()"/>
+                                    </weak>
+                                    <br/>
                                     <weak>
                                         <field name="days_to_deadline"/>
                                     </weak>
@@ -112,8 +109,8 @@
                                         <field name="name"/>
                                     </strong>
                                     <br/>
-<!--                                    <field name="country"/>-->
-<!--                                    <br/>-->
+                                    <!--                                    <field name="country"/>-->
+                                    <!--                                    <br/>-->
                                     <small>Deadline:
                                         <field name="date_bid_to_end"/>
                                     </small>

@@ -77,8 +77,9 @@ class TenderManagement(models.Model):
         _description = "Tender Management Line"
 
         product_id = fields.Many2one('product.product', string='Products')
-        price_unit = fields.Float(string='Price')
-        qty = fields.Integer(string='Quantity')
+        # default_code = fields.Many2one('product.product', string='Internal Reference')
+        description = fields.Char(string='Description')
+        product_uom_id = fields.Many2one('product.template', string='Unit of Measure', readonly=True)
         tender_management_id=fields.Many2one('tender.management',string='Tender Management')
 
 
