@@ -25,7 +25,8 @@ class TenderManagement(models.Model):
     bid_count = fields.Integer(string='Bid Count', compute='_compute_bid_count')
     tender_management_line_ids=fields.One2many('tender.management.line','tender_management_id',string='Tender Management Line')
     formatted_date = fields.Char(string='Formatted Date', compute='_compute_formatted_date')
-
+    category=fields.Char(string='Category')
+    rank=fields.Char(string='Top Rank')
     @api.depends('date_created')
     def _compute_formatted_date(self):
         for record in self:
@@ -77,9 +78,9 @@ class TenderManagement(models.Model):
         _description = "Tender Management Line"
 
         product_id = fields.Many2one('product.product', string='Products')
-        # default_code = fields.Many2one('product.product', string='Internal Reference')
+        default_code = fields.Char(related='product_id.default_code', string='Code')
         description = fields.Char(string='Description')
-        product_uom_id = fields.Many2one('product.template', string='Unit of Measure', readonly=True)
+        product_uom_id = fields.Many2one('uom.uom', string='Unit of Measure')
         tender_management_id=fields.Many2one('tender.management',string='Tender Management')
 
 

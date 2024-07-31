@@ -35,28 +35,33 @@
                            statusbar_visible="draft,submit,approve,approved,done"/>
                 </header>
                 <sheet>
-                    <!--                    <group>-->
                     <group>
-                        <field name="ref"/>
-                        <field name="name" default_focus="1"/>
-                        <field name="partner_id" widget="many2many_tags"/>
-                        <field name="date_created"/>
-                        <field name="date_bid_to_end"/>
-                        <field name="days_to_deadline"/>
+                        <group>
+                            <field name="ref" invisible="1"/>
+                            <field name="name" default_focus="1"/>
+                            <field name="partner_id" widget="many2many_tags"/>
+                            <field name="date_created"/>
+                            <field name="date_bid_to_end"/>
+                            <field name="days_to_deadline"/>
+                        </group>
+                        <group>
+                            <field name="category"/>
+                            <field name="rank"/>
+                        </group>
                     </group>
                     <notebook>
                         <page string="Products" name="products">
                             <field name="tender_management_line_ids">
                                 <tree string="Tender Management Line Ids" editable="bottom">
                                     <field name="product_id"/>
-<!--                                    <field name="default_code"/>-->
+                                    <field name="default_code"/>
                                     <field name="description"/>
                                     <field name="product_uom_id"/>
                                 </tree>
                                 <form>
                                     <group>
                                         <field name="product_id"/>
-<!--                                        <field name="default_code"/>-->
+                                        <field name="default_code"/>
                                         <field name="description"/>
                                         <field name="product_uom_id"/>
                                     </group>
