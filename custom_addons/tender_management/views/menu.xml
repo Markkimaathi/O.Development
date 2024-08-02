@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_tenders_management_root"
+              name="Tenders"
+              web_icon="tender_management,static/description/tender.png"
+              sequence="10"/>
+
+    <menuitem id="menu_tenders_master"
+              name="Tenders"
+              parent="menu_tenders_management_root"
+              sequence="0"/>
+
+
+    <menuitem id="menu_tenders_quotation_master"
+              name="Tender Quotation"
+              parent="menu_tenders_management_root"
+              sequence="1"/>
+
+    <menuitem id="menu_tenders_products_master"
+              name="Products"
+              parent="menu_tenders_management_root"
+              sequence="2"/>
+
+    <menuitem id="menu_tenders_vendors_master"
+              name="Vendors"
+              parent="menu_tenders_management_root"
+              sequence="3"/>
+
+    <menuitem id="menu_tenders_reporting_master"
+              name="Reporting"
+              parent="menu_tenders_management_root"
+              sequence="4"/>
+
+    <menuitem id="menu_tenders_configuration_master"
+              name="Configuration"
+              parent="menu_tenders_management_root"
+              sequence="5"/>
+
+
+</odoo>
