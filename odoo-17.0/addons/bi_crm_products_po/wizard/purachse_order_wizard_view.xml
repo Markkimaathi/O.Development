@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="wizard_purchase_view" model="ir.ui.view">
+        <field name="name">Purchase Order</field>
+        <field name="model">wizard.purchase</field>
+        <field name="arch" type="xml">
+            <form string="Purchase Order">
+                <sheet>
+                    <group>
+                        <field name="purchase_state" string="Purchase State" widget = "radio"/>
+                        <field name="schedule_date" string="Schedule Date"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_create_purchase_order" string="Create" type="object" class="btn-primary"/>
+                    <button special="cancel" string="Cancel" class="btn btn-default"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="wizard_purchase_action" model="ir.actions.act_window">
+        <field name="name">Purchase Order</field>
+        <field name="res_model">wizard.purchase</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="wizard_purchase_view"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

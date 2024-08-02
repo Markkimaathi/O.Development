@@ -19,6 +19,9 @@ class PurchaseRequestLine(models.Model):
     _inherit = ["mail.thread", "mail.activity.mixin", "analytic.mixin"]
     _order = "id desc"
 
+    line_id = fields.Many2one('purchase.rfq', string='Line Reference', required=True)
+    keep_description = fields.Boolean(string='Keep Description')
+
     name = fields.Char(string="Description", tracking=True)
     product_uom_id = fields.Many2one(
         comodel_name="uom.uom",
