@@ -1,0 +1,125 @@
+<odoo>
+
+    <record id="view_bid_tree" model="ir.ui.view">
+        <field name="name">tender.bid.tree</field>
+        <field name="model">tender.bid</field>
+        <field name="arch" type="xml">
+            <tree string="Bid List">
+                <field name="name"/>
+                <field name="tender_id"/>
+                <field name="ref"/>
+                <field name="partner_id"/>
+                <field name="date_created"/>
+                <field name="date_bid_to_end"/>
+                <field name="state"
+                       decoration-success="state == 'DRAFT' or state == 'DONE'"
+                       decoration-info="state == 'SUBMITTED'"
+                       decoration-danger="state == 'APPROVE'"
+                       decoration-warning="state == 'IN PROGRESS' or state == 'CANCEL'"
+                       widget="badge"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_bid_form" model="ir.ui.view">
+        <field name="name">tender.bid.form</field>
+        <field name="model">tender.bid</field>
+        <field name="arch" type="xml">
+            <form string="Bid Form">
+                <header>
+                    <field name="state" invisible="1"/>
+                    <button name="action_approve" string="APPROVE" type="object" invisible="state not in 'submit'"
+                            class="oe_highlight"/>
+                    <button name="action_approved" string="IN PROGRESS" type="object" invisible="state not in 'approve'"
+                            class="oe_highlight"/>
+                    <button name="action_submit" string="SUBMIT" type="object" invisible="state not in 'draft'"
+                            class="oe_highlight"/>
+                    <button name="action_done" string="DONE" type="object" invisible="state not in 'approved'"
+                            class="oe_highlight"/>
+                    <button name="action_cancel" string="CANCEL" type="object" invisible="state in ['done','cancel']"
+                            class="oe_highlight"/>
+                    <button name="action_draft" string="DRAFT" type="object" invisible="state not in 'cancel'"
+                            class="oe_highlight"/>
+                    <button name="%(action_tenders)d" string="VIEW TENDER" type="action" invisible="state not in 'done'"
+                            class="oe_highlight"/>
+                    <field name="state" widget="badge" nolabel="1"
+                           badge_visible="draft,submit,approve,approved,done"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="tender_id"/>
+                        <field name="ref" invisible="1"/>
+                        <field name="date_created"/>
+                        <field name="date_bid_to_end"/>
+                        <field name="state" invisible="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Material" name="Products">
+                            <field name="bid_management_line_ids">
+                                <tree string="Bid Management Line Ids" editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="default_code"/>
+                                    <field name="description"/>
+                                    <field name="product_quantity"/>
+                                    <field name="product_uom_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Labour" name="Products">
+                            <field name="bid_management_line_ids">
+                                <tree editable="top">
+                                    <field name="product_id"/>
+                                    <field name="default_code"/>
+                                    <field name="description"/>
+                                    <field name="product_quantity"/>
+                                    <field name="product_uom_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Overhead" name="Products">
+                            <field name="bid_management_line_ids">
+                                <tree editable="top">
+                                    <field name="product_id"/>
+                                    <field name="default_code"/>
+                                    <field name="description"/>
+                                    <field name="product_quantity"/>
+                                    <field name="product_uom_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_bid_search" model="ir.ui.view">
+        <field name="name">tender.bid.search</field>
+        <field name="model">tender.bid</field>
+        <field name="arch" type="xml">
+            <search string="Bid Search">
+                <field name="name"/>
+                <field name="tender_id"/>
+                <field name="partner_id"/>
+                <field name="state"/>
+            </search>
+        </field>
+    </record>
+
+     <record id="action_bid_tree" model="ir.actions.act_window">
+        <field name="name">Bids</field>
+        <field name="res_model">tender.bid</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No bids found.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_tender_bid" name="Bids" parent="menu_tenders_quotation_master" action="action_bid_tree"
+              sequence="20"/>
+
+
+</odoo>

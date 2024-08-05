@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <record id="action_tenders" model="ir.actions.act_window">
+        <field name="name">Tenders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">tender.management</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+
     <record id="view_tenders_tree" model="ir.ui.view">
         <field name="name">tenders.management</field>
         <field name="model">tender.management</field>
@@ -61,11 +69,13 @@
 
                     <group>
                         <group>
-                            <div class="text-label" >
+                            <div class="text-label">
                                 <strong>Tender</strong>
                             </div>
-                            <div >
-                                <h1 style=" flex-grow: 1; font-weight: bold;  width: 100%; "><field  name="tender_name" nolabel="1" class="o_field_widget"/></h1>
+                            <div>
+                                <h1 style=" flex-grow: 1; font-weight: bold;  width: 100%; ">
+                                    <field name="tender_name" nolabel="1" class="o_field_widget"/>
+                                </h1>
 
                             </div>
                             <field name="ref" invisible="0"/>
@@ -162,13 +172,6 @@
         </field>
     </record>
 
-
-    <record id="action_tenders" model="ir.actions.act_window">
-        <field name="name">Tenders</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">tender.management</field>
-        <field name="view_mode">kanban,tree,form</field>
-    </record>
 
     <menuitem id="menu_management_tenders_main" name="Tenders" parent="menu_tenders_master" action="action_tenders"
               sequence="5"/>
