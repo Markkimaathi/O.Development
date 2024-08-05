@@ -69,27 +69,17 @@
 
                     <group>
                         <group>
-                            <div class="text-label">
-                                <strong>Tender</strong>
-                            </div>
-                            <div>
-                                <h1 style=" flex-grow: 1; font-weight: bold;  width: 100%; ">
-                                    <field name="tender_name" nolabel="1" class="o_field_widget"/>
-                                </h1>
-
-                            </div>
                             <field name="ref" invisible="0"/>
 
 
                             <field name="name" default_focus="1"/>
-                            <!--                            <field name="name" default_focus="1"/>-->
                             <field name="partner_id" widget="many2many_tags"/>
                             <field name="date_created"/>
                             <field name="date_bid_to_end"/>
                             <field name="days_to_deadline"/>
                         </group>
                         <group>
-                            <field name="category"/>
+                            <field name="category_id"/>
                             <field name="top_rank"/>
                         </group>
                     </group>

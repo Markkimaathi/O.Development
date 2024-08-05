@@ -16,6 +16,7 @@
         "views/menu.xml",
         "views/tender_views.xml",
         "views/bid_views.xml",
+        "views/category_views.xml",
     ],
     'demo': [],
     'installable': True,
