@@ -5,9 +5,10 @@
         <field name="model">tender.bid</field>
         <field name="arch" type="xml">
             <tree string="Bid List">
+                <field name="tender_id"/>
                 <field name="tender_name"/>
                 <field name="name"/>
-                <field name="tender_id"/>
+
                 <field name="ref"/>
                 <field name="partner_id"/>
                 <field name="date_created"/>
@@ -48,9 +49,10 @@
                 </header>
                 <sheet>
                     <group>
+                        <field name="tender_id" />
                         <field name="tender_name"/>
                         <field name="name"/>
-                        <field name="tender_id" />
+
                         <field name="ref" invisible="1"/>
                         <field name="date_created"/>
                         <field name="date_bid_to_end"/>

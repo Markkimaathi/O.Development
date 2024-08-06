@@ -33,7 +33,7 @@ class TenderManagement(models.Model):
                                                  string='Tender Management Line')
     formatted_date = fields.Char(string='Formatted Date', compute='_compute_formatted_date')
     category_id = fields.Many2one('tender.category', string='Category')
-    category_name = fields.Char(related='category_id.name', string='Category Name')
+    category_name = fields.Char(related="category_id.name", string='Category Name')
     top_rank = fields.Char(string='Top Rank')
     is_active = fields.Boolean(string='Active', default=True)
     website_published = fields.Boolean('Publish on Website', copy=False)
