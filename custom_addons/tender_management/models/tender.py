@@ -1,4 +1,4 @@
-from odoo import api, fields, models,_
+from odoo import api, fields, models, _
 from _datetime import date
 
 
@@ -7,13 +7,14 @@ class TenderManagement(models.Model):
     _description = "Tender Management"
     _inherit = ['mail.thread', 'mail.activity.mixin', ]
 
+    tender_name = fields.Char(string='Tender Name', required=True)
+
     #call the users
 
     def _get_default_user(self):
         return self.env.user.id
 
     name = fields.Many2one('res.users', string="Purchase Representative", default=_get_default_user)
-    tender_name = fields.Char(default='Tender Name')
     ref = fields.Char(string="Reference", copy=False, default='New', readonly=True)
     partner_id = fields.Many2many('res.partner', string="Vendor")
     date_created = fields.Date(string='Start Date', default=fields.Date.context_today)
@@ -48,6 +49,7 @@ class TenderManagement(models.Model):
             else:
                 record.formatted_date = ''
 
+    # compute days between start date and end date
     @api.depends('date_bid_to_end')
     def _compute_days(self):
         for rec in self:
@@ -55,6 +57,10 @@ class TenderManagement(models.Model):
                 today = fields.Date.context_today(self)
                 days_difference = (rec.date_bid_to_end - today).days
                 rec.days_to_deadline = days_difference
+                # if today == days_difference:
+                #
+                # else:
+
             else:
                 rec.days_to_deadline = 0
 
@@ -101,7 +107,7 @@ class TenderManagementLine(models.Model):
     _name = 'tender.management.line'
     _description = "Tender Management Line"
 
-    product_id = fields.Many2one('product.product', string='Products')
+    product_id = fields.Many2one('product.product', string='Products', required=True)
     product_uom_id = fields.Many2one(
         comodel_name='uom.uom',
         string='Product Uom',

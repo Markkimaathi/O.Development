@@ -1,20 +1,20 @@
-from odoo import api, fields, models,_
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
+
 
 class Bid(models.Model):
     _name = 'tender.bid'
     _description = 'Bid'
 
-    def _get_default_user(self):
-        return self.env.user.id
-
-    name = fields.Many2one('res.users', string="Purchase Representative", default=_get_default_user)
-    tender_id = fields.Many2one('tender.management', string="Tender", required=True)
+    tender_id = fields.Many2one('tender.management', string="Tender")
+    tender_name = fields.Char(string='Tender Name', related='tender_id.tender_name')
+    name = fields.Many2one(string='Purchase Representative', related='tender_id.name')
     ref = fields.Char(string="Reference", copy=False, default='New', readonly=True)
     partner_id = fields.Many2many('res.partner', string="Vendor")
-    date_created = fields.Date(string='Start Date', default=fields.Date.context_today)
-    date_bid_to_end = fields.Date(sbid_amounttring='End Date', default=fields.Date.context_today)
+    date_created = fields.Date(string='Start Date', related='tender_id.date_created')
+    date_bid_to_end = fields.Date(string='End Date', related='tender_id.date_bid_to_end')
     bid_management_line_ids = fields.One2many('bid.management.line', 'bid_management_id',
-                                                 string='Tender Management Line')
+                                              string='Tender Management Line')
     bid_ids = fields.One2many('tender.bid', 'tender_id', string="Bids")
 
     state = fields.Selection([
@@ -29,6 +29,12 @@ class Bid(models.Model):
         if vals.get('ref', _('New')) == _('New'):
             vals['ref'] = self.env['ir.sequence'].next_by_code('tender.bid') or _('New')
         return super(Bid, self).create(vals)
+
+    @api.constrains('tender_name')
+    def _check_tender_name(self):
+        for record in self:
+            if not record.tender_name:
+                raise ValidationError(_("Tender Name is required."))
 
     def _compute_bid_count(self):
         for tender in self:
@@ -55,6 +61,7 @@ class Bid(models.Model):
 
     def action_submit(self):
         self.change_state('submit')
+
 
 class BidManagementLine(models.Model):
     _name = 'bid.management.line'

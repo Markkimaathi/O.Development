@@ -13,7 +13,7 @@
         <field name="model">tender.management</field>
         <field name="arch" type="xml">
             <tree string="Tenders Management">
-                <field name="name"/>
+                <field name="tender_name"/>
                 <field name="ref"/>
             </tree>
         </field>
@@ -69,10 +69,12 @@
 
                     <group>
                         <group>
-                            <field name="ref" invisible="0"/>
+
+                            <field name="tender_name" default_focus="1"/>
+                            <field name="ref"/>
 
 
-                            <field name="name" default_focus="1"/>
+                            <field name="name"/>
                             <field name="partner_id" widget="many2many_tags"/>
                             <field name="date_created"/>
                             <field name="date_bid_to_end"/>
@@ -144,6 +146,11 @@
                                     Submissions
                                 </div>
                                 <div class="o_kanban_record_headings" style="flex: 1; padding: 8px;">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="tender_name"/>
+                                        </strong>
+                                <br/>
+
                                     <strong class="o_kanban_record_title">
                                         <field name="name"/>
                                     </strong>
