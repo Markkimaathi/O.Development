@@ -7,7 +7,7 @@
             <form string="Category">
                 <sheet>
                     <group>
-                        <field name="category_name"/>
+                        <field name="name"/>
                         <field name="description"/>
                         <field name="active"/>
                     </group>
@@ -21,7 +21,7 @@
         <field name="model">tender.category</field>
         <field name="arch" type="xml">
             <tree string="Category">
-                <field name="category_name"/>
+                <field name="name"/>
                 <field name="description"/>
                 <field name="active"/>
             </tree>

@@ -14,9 +14,10 @@
         'data/ir_sequence_data.xml',
         "security/ir.model.access.csv",
         "views/menu.xml",
+        "views/category_views.xml",
         "views/tender_views.xml",
         "views/bid_views.xml",
-        "views/category_views.xml",
+
     ],
     'demo': [],
     'installable': True,
