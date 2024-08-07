@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <tree string="Bid List">
                 <field name="tender_id"/>
-<!--                <field name="tender_name"/>-->
+                <!--                <field name="tender_name"/>-->
                 <field name="tender_user"/>
 
                 <field name="ref"/>
@@ -49,8 +49,8 @@
                 </header>
                 <sheet>
                     <group>
-                        <field name="tender_id" />
-<!--                        <field name="tender_name"/>-->
+                        <field name="tender_id"/>
+                        <!--                        <field name="tender_name"/>-->
                         <field name="tender_user"/>
 
                         <field name="ref" invisible="1"/>
@@ -69,6 +69,7 @@
                                     <field name="default_code"/>
                                     <field name="description"/>
                                     <field name="product_quantity"/>
+                                    <field name="price_unit"/>
                                     <field name="product_uom_id"/>
                                 </tree>
                             </field>
@@ -80,6 +81,7 @@
                                     <field name="default_code"/>
                                     <field name="description"/>
                                     <field name="product_quantity"/>
+                                    <field name="price_unit"/>
                                     <field name="product_uom_id"/>
                                 </tree>
                             </field>
@@ -91,6 +93,7 @@
                                     <field name="default_code"/>
                                     <field name="description"/>
                                     <field name="product_quantity"/>
+                                    <field name="price_unit"/>
                                     <field name="product_uom_id"/>
                                 </tree>
                             </field>
@@ -114,7 +117,7 @@
         </field>
     </record>
 
-     <record id="action_bid_tree" model="ir.actions.act_window">
+    <record id="action_bid_tree" model="ir.actions.act_window">
         <field name="name">Bids</field>
         <field name="res_model">tender.bid</field>
         <field name="view_mode">tree,form</field>
