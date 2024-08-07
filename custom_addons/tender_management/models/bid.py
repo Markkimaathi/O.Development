@@ -10,9 +10,10 @@ class Bid(models.Model):
     # tender_name = fields.Char(string='Tender Name', related='tender_id.tender_name')
     tender_user = fields.Many2one(string='Purchase Representative', related='tender_id.tender_user')
     ref = fields.Char(string="Reference", copy=False, default='New', readonly=True)
-    partner_id = fields.Many2many('res.partner', string="Vendor")
+    partner_id = fields.Many2one('res.partner', string="Vendor")
     date_created = fields.Date(string='Start Date', related='tender_id.date_created')
     date_bid_to_end = fields.Date(string='End Date', related='tender_id.date_bid_to_end')
+    days_to_deadline = fields.Integer(string='Days Remaining', related='tender_id.days_to_deadline')
     bid_management_line_ids = fields.One2many('bid.management.line', 'bid_management_id',
                                               string='Tender Management Line')
     bid_ids = fields.One2many('tender.bid', 'tender_id', string="Bids")
@@ -30,11 +31,6 @@ class Bid(models.Model):
             vals['ref'] = self.env['ir.sequence'].next_by_code('tender.bid') or _('New')
         return super(Bid, self).create(vals)
 
-    @api.constrains('tender_name')
-    def _check_tender_name(self):
-        for record in self:
-            if not record.tender_name:
-                raise ValidationError(_("Tender Name is required."))
 
     def _compute_bid_count(self):
         for tender in self:

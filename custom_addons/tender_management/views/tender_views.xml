@@ -39,17 +39,11 @@
                             class="oe_highlight"/>
                     <button name="%(action_tenders)d" string="VIEW TENDER" type="action" invisible="state not in 'done'"
                             class="oe_highlight"/>
-                    <field name="state" widget="statusbar" nolabel="1"
-                           statusbar_visible="draft,submit,approve,approved,done"/>
+                    <field name="state" widget="badge" nolabel="1"
+                             badge_visible="draft,submit,approve,approved,done"/>
                 </header>
                 <sheet>
-                    <!--                    <group>-->
-
-                    <!--                    </group>-->
                     <group style="display: flex; justify-content: flex-end; margin-bottom: 45px; margin-left: 45%; ">
-                        <!--                        <div>-->
-                        <!--                            <field name=""/>-->
-                        <!--                        </div>-->
                         <div class="oe_button_box" name="button_box">
                             <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
                                 <field name="is_active" widget="boolean_button"/>
@@ -130,20 +124,28 @@
                         <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
                             <div class="o_kanban_record_top" style="display: flex;">
                                 <div class="oe_kanban_bottom_left"
-                                     style="flex: 0 0 80px; background-color: #00A09D; color: white; padding: 8px; text-align: center;">
+                                    style=" background-color: #00A09D; padding: 2px;width:40%; align-items: center;">
+                                     <h2 class="text-white text-center" style="padding-top:10px;">
                                     <weak>
                                         <t t-esc="record.formatted_date.raw_value.split('\n')[0].trim()"/>
                                     </weak>
+                                     </h2>
                                     <br/>
+                                     <h5 class="text-white text-center">
                                     <weak>
                                         <t t-esc="record.formatted_date.raw_value.split('\n')[1].trim()"/>
                                     </weak>
+                                     </h5>
                                     <br/>
+                                      <h2 class="text-white text-center">
                                     <weak>
                                         <field name="days_to_deadline"/>
                                     </weak>
+                                      </h2>
                                     <br/>
+                                    <h5 class="text-white text-center">
                                     Submissions
+                                    </h5>
                                 </div>
                                 <div class="o_kanban_record_headings" style="flex: 1; padding: 8px;">
                                         <strong class="o_kanban_record_title">
@@ -155,8 +157,6 @@
                                         <field name="tender_user"/>
                                     </strong>
                                     <br/>
-                                    <!--                                    <field name="country"/>-->
-                                    <!--                                    <br/>-->
                                     <small>Deadline:
                                         <field name="date_bid_to_end"/>
                                     </small>
