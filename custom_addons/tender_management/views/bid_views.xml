@@ -6,8 +6,8 @@
         <field name="arch" type="xml">
             <tree string="Bid List">
                 <field name="tender_id"/>
-                <field name="tender_name"/>
-                <field name="name"/>
+<!--                <field name="tender_name"/>-->
+                <field name="tender_user"/>
 
                 <field name="ref"/>
                 <field name="partner_id"/>
@@ -50,8 +50,8 @@
                 <sheet>
                     <group>
                         <field name="tender_id" />
-                        <field name="tender_name"/>
-                        <field name="name"/>
+<!--                        <field name="tender_name"/>-->
+                        <field name="tender_user"/>
 
                         <field name="ref" invisible="1"/>
                         <field name="date_created"/>
@@ -103,7 +103,7 @@
         <field name="model">tender.bid</field>
         <field name="arch" type="xml">
             <search string="Bid Search">
-                <field name="name"/>
+                <field name="tender_user"/>
                 <field name="tender_id"/>
                 <field name="partner_id"/>
                 <field name="state"/>

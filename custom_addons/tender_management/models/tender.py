@@ -7,14 +7,14 @@ class TenderManagement(models.Model):
     _description = "Tender Management"
     _inherit = ['mail.thread', 'mail.activity.mixin', ]
 
-    tender_name = fields.Char(string='Tender Name', required=True)
+    name = fields.Char(string='Tender Name', required=True)
 
     #call the users
 
     def _get_default_user(self):
         return self.env.user.id
 
-    name = fields.Many2one('res.users', string="Purchase Representative", default=_get_default_user)
+    tender_user = fields.Many2one('res.users', string="Purchase Representative", default=_get_default_user)
     ref = fields.Char(string="Reference", copy=False, default='New', readonly=True)
     partner_id = fields.Many2many('res.partner', string="Vendor")
     date_created = fields.Date(string='Start Date', default=fields.Date.context_today)
@@ -33,7 +33,7 @@ class TenderManagement(models.Model):
                                                  string='Tender Management Line')
     formatted_date = fields.Char(string='Formatted Date', compute='_compute_formatted_date')
     category_id = fields.Many2one('tender.category', string='Category')
-    category_name = fields.Char(related="category_id.name", string='Category Name')
+    # category_name = fields.Char(related="category_id.name", string='Category Name')
     top_rank = fields.Char(string='Top Rank')
     is_active = fields.Boolean(string='Active', default=True)
     website_published = fields.Boolean('Publish on Website', copy=False)

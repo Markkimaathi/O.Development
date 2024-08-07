@@ -13,7 +13,7 @@
         <field name="model">tender.management</field>
         <field name="arch" type="xml">
             <tree string="Tenders Management">
-                <field name="tender_name"/>
+                <field name="name"/>
                 <field name="ref"/>
             </tree>
         </field>
@@ -70,11 +70,11 @@
                     <group>
                         <group>
 
-                            <field name="tender_name" default_focus="1"/>
+                            <field name="name" default_focus="1"/>
                             <field name="ref"/>
 
 
-                            <field name="name"/>
+                            <field name="tender_user"/>
                             <field name="partner_id" widget="many2many_tags"/>
                             <field name="date_created"/>
                             <field name="date_bid_to_end"/>
@@ -121,7 +121,7 @@
         <field name="model">tender.management</field>
         <field name="arch" type="xml">
             <kanban>
-                <field name="name"/>
+                <field name="tender_user"/>
                 <field name="formatted_date"/>
                 <field name="days_to_deadline"/>
                 <field name="date_bid_to_end"/>
@@ -147,12 +147,12 @@
                                 </div>
                                 <div class="o_kanban_record_headings" style="flex: 1; padding: 8px;">
                                         <strong class="o_kanban_record_title">
-                                            <field name="tender_name"/>
+                                            <field name="name"/>
                                         </strong>
                                 <br/>
 
                                     <strong class="o_kanban_record_title">
-                                        <field name="name"/>
+                                        <field name="tender_user"/>
                                     </strong>
                                     <br/>
                                     <!--                                    <field name="country"/>-->

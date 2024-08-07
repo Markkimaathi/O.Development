@@ -7,8 +7,8 @@ class Bid(models.Model):
     _description = 'Bid'
 
     tender_id = fields.Many2one('tender.management', string="Tender")
-    tender_name = fields.Char(string='Tender Name', related='tender_id.tender_name')
-    name = fields.Many2one(string='Purchase Representative', related='tender_id.name')
+    # tender_name = fields.Char(string='Tender Name', related='tender_id.tender_name')
+    tender_user = fields.Many2one(string='Purchase Representative', related='tender_id.tender_user')
     ref = fields.Char(string="Reference", copy=False, default='New', readonly=True)
     partner_id = fields.Many2many('res.partner', string="Vendor")
     date_created = fields.Date(string='Start Date', related='tender_id.date_created')
