@@ -9,7 +9,7 @@ class Bid(models.Model):
     tender_id = fields.Many2one('tender.management', string="Tender")
     # tender_name = fields.Char(string='Tender Name', related='tender_id.tender_name')
     tender_user = fields.Many2one(string='Purchase Representative', related='tender_id.tender_user')
-    ref = fields.Char(string="Reference", copy=False, default='New', readonly=True)
+    name = fields.Char(string="Reference", copy=False, default='New', readonly=True)
     partner_id = fields.Many2one('res.partner', string="Vendor")
     date_created = fields.Date(string='Start Date', related='tender_id.date_created')
     date_bid_to_end = fields.Date(string='End Date', related='tender_id.date_bid_to_end')
@@ -27,8 +27,8 @@ class Bid(models.Model):
         ('cancel', 'CANCEL')], string='State', default='draft', required=True)
 
     def create(self, vals):
-        if vals.get('ref', _('New')) == _('New'):
-            vals['ref'] = self.env['ir.sequence'].next_by_code('tender.bid') or _('New')
+        if vals.get('name', _('New')) == _('New'):
+            vals['name'] = self.env['ir.sequence'].next_by_code('tender.bid') or _('New')
         return super(Bid, self).create(vals)
 
 

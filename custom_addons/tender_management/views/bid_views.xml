@@ -9,7 +9,7 @@
                 <!--                <field name="tender_name"/>-->
                 <field name="tender_user"/>
 
-                <field name="ref"/>
+                <field name="name"/>
                 <field name="partner_id"/>
                 <field name="date_created"/>
                 <field name="date_bid_to_end"/>
@@ -53,7 +53,7 @@
                         <!--                        <field name="tender_name"/>-->
                         <field name="tender_user"/>
 
-                        <field name="ref" invisible="1"/>
+                        <field name="name" invisible="1"/>
                         <field name="date_created"/>
                         <field name="date_bid_to_end"/>
                         <field name="date_bid_to_end"/>
