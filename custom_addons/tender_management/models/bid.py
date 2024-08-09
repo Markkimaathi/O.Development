@@ -83,7 +83,7 @@ class BidManagementLine(models.Model):
     product_uom_id = fields.Many2one(
         comodel_name='uom.uom',
         string='Unit of Measure',
-        store=True, readonly=False,
+        store=True, readonly=True,
         # related='product_id.product_uom_id'
     )
     product_quantity = fields.Many2one(

@@ -1,5 +1,14 @@
 <odoo>
-
+    <record id="action_bid_tree" model="ir.actions.act_window">
+        <field name="name">Bids</field>
+        <field name="res_model">tender.bid</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No bids found.
+            </p>
+        </field>
+    </record>
     <record id="view_bid_tree" model="ir.ui.view">
         <field name="name">tender.bid.tree</field>
         <field name="model">tender.bid</field>
@@ -42,7 +51,7 @@
                             class="oe_highlight"/>
                     <button name="action_draft" string="DRAFT" type="object" invisible="state not in 'cancel'"
                             class="oe_highlight"/>
-                    <button name="%(action_tenders)d" string="VIEW TENDER" type="action" invisible="state not in 'done'"
+                    <button name="%(action_bid_tree)d" string="VIEW BID" type="action" invisible="state not in 'done'"
                             class="oe_highlight"/>
                     <field name="state" widget="badge" nolabel="1"
                            badge_visible="draft,submit,approve,approved,done"/>
@@ -96,16 +105,7 @@
         </field>
     </record>
 
-    <record id="action_bid_tree" model="ir.actions.act_window">
-        <field name="name">Bids</field>
-        <field name="res_model">tender.bid</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                No bids found.
-            </p>
-        </field>
-    </record>
+
 
     <menuitem id="menu_tender_bid" name="Bids" parent="menu_tenders_quotation_master" action="action_bid_tree"
               sequence="20"/>
