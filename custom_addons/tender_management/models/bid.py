@@ -95,4 +95,12 @@ class BidManagementLine(models.Model):
     qty = fields.Integer(string='Quantity', related='tender_management_line_id.qty')
     default_code = fields.Char(related='product_id.default_code', string='Code')
     description = fields.Char(string='Description')
+    price_total = fields.Monetary(compute='_compute_amount', string='Total', store=True)
+    currency_id = fields.Many2one('res.currency', string='Currency', required=True,
+                                  default=lambda self: self.env.company.currency_id)
     bid_management_id = fields.Many2one('tender.bid', string='Bid Management')
+
+    @api.depends('qty', 'price_unit')
+    def _compute_amount(self):
+        for line in self:
+            line.price_total = line.qty * line.price_unit
