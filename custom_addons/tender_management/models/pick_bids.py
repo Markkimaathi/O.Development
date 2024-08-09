@@ -11,7 +11,7 @@ class Bid(models.Model):
     date_created = fields.Date(string='Start Date', related='tender_id.date_created')
     date_bid_to_end = fields.Date(string='End Date', related='tender_id.date_bid_to_end')
     days_to_deadline = fields.Integer(string='Days Remaining', related='tender_id.days_to_deadline')
-    bid_id = fields.Many2one('tender.id', string='Bids')
+    bid_id = fields.Many2one('tender.bid', string='Bids')
     pick_bid_management_line_ids = fields.One2many('pick.bid.management.line', 'pick_bid_management_id',
                                                    string='Pick Bid Management Line')
     state = fields.Selection([
