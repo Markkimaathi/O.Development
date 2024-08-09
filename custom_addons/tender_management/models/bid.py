@@ -31,6 +31,22 @@ class Bid(models.Model):
             vals['name'] = self.env['ir.sequence'].next_by_code('tender.bid') or _('New')
         return super(Bid, self).create(vals)
 
+    # a function that auto-populates bid notebook
+    @api.model
+    def create(self, vals):
+        bid = super(Bid, self).create(vals)
+        if bid.tender_id:
+            for line in bid.tender_id.tender_management_line_ids:
+                self.env['bid.management.line'].create({
+                    'tender_management_line_id': line.id,
+                    'bid_management_id': bid.id,
+                    'product_id': line.product_id.id,
+                    'product_uom_id': line.product_uom_id.id,
+                    'qty': line.qty,
+                    'price_unit': line.price_unit,
+                    'description': line.description,
+                })
+        return bid
 
     def _compute_bid_count(self):
         for tender in self:
@@ -63,11 +79,13 @@ class BidManagementLine(models.Model):
     _name = 'bid.management.line'
     _description = "Bid Management Line"
 
-    product_id = fields.Many2one('product.product', string='Products')
+    tender_management_line_id = fields.Many2one('tender.management.line', string='Tender Management Line')
+    product_id = fields.Many2one('product.product', string='Products', related='tender_management_line_id.product_id')
     product_uom_id = fields.Many2one(
         comodel_name='uom.uom',
-        string='Product Uom',
+        string='Unit of Measure',
         store=True, readonly=False,
+        # related='product_id.product_uom_id'
     )
     product_quantity = fields.Many2one(
         comodel_name='uom.uom',
@@ -75,7 +93,7 @@ class BidManagementLine(models.Model):
         store=True, readonly=False,
     )
     price_unit = fields.Float(string='Price', related='product_id.list_price')
-    qty = fields.Integer(string='Quantity')
+    qty = fields.Integer(string='Quantity', related='tender_management_line_id.qty')
     default_code = fields.Char(related='product_id.default_code', string='Code')
     description = fields.Char(string='Description')
     bid_management_id = fields.Many2one('tender.bid', string='Bid Management')

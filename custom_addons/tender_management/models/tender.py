@@ -31,6 +31,8 @@ class TenderManagement(models.Model):
     bid_count = fields.Integer(string='Bid Count', compute='_compute_bid_count', store=True)
     tender_management_line_ids = fields.One2many('tender.management.line', 'tender_management_id',
                                                  string='Tender Management Line')
+    bid_management_line_ids = fields.One2many('bid.management.line', 'bid_management_id',
+                                              string='Tender Management Line')
     formatted_date = fields.Char(string='Formatted Date', compute='_compute_formatted_date')
     category_id = fields.Many2one('tender.category', string='Category')
     # category_name = fields.Char(related="category_id.name", string='Category Name')
