@@ -4,3 +4,4 @@ access.tender.management.line,access_tender_management_line,tender_management.mo
 access.tender.bid,access_tender_bid,tender_management.model_tender_bid,base.group_user,1,1,1,1
 access.bid.management.line,access_bid_management_line,tender_management.model_bid_management_line,base.group_user,1,1,1,1
 access.tender.category,access_tender_category,tender_management.model_tender_category,base.group_user,1,1,1,1
+access.pick.bid,access_pick_bid,tender_management.model_pick_bid,base.group_user,1,1,1,1

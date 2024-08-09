@@ -17,6 +17,7 @@
         "views/category_views.xml",
         "views/tender_views.xml",
         "views/bid_views.xml",
+        "views/pick_bid_views.xml",
 
     ],
     'demo': [],

@@ -17,9 +17,9 @@
                 <field name="tender_id"/>
                 <!--                <field name="tender_name"/>-->
                 <field name="tender_user"/>
-
+                <field name="ref"/>
                 <field name="name"/>
-                <field name="partner_id"/>
+
                 <field name="date_created"/>
                 <field name="date_bid_to_end"/>
                 <field name="state"
@@ -60,7 +60,7 @@
                     <group>
                         <group>
                             <field name="tender_id"/>
-                            <field name="name" invisible="0"/>
+                            <field name="ref" invisible="0"/>
                             <field name="tender_user"/>
                             <field name="date_created"/>
                             <field name="date_bid_to_end"/>
@@ -68,7 +68,7 @@
                             <field name="state" invisible="1"/>
                         </group>
                         <group>
-                            <field name="partner_id"/>
+                            <field name="name"/>
                         </group>
                     </group>
 
@@ -99,12 +99,11 @@
             <search string="Bid Search">
                 <field name="tender_user"/>
                 <field name="tender_id"/>
-                <field name="partner_id"/>
+                <field name="name"/>
                 <field name="state"/>
             </search>
         </field>
     </record>
-
 
 
     <menuitem id="menu_tender_bid" name="Bids" parent="menu_tenders_quotation_master" action="action_bid_tree"
