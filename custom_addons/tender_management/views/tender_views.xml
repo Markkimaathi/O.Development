@@ -86,6 +86,7 @@
                                     <field name="product_id"/>
                                     <field name="default_code"/>
                                     <field name="description"/>
+                                    <field name="qty"/>
                                     <field name="product_uom_id"/>
                                 </tree>
                                 <form>
@@ -93,6 +94,7 @@
                                         <field name="product_id"/>
                                         <field name="default_code"/>
                                         <field name="description"/>
+                                        <field name="qty"/>
                                         <field name="product_uom_id"/>
                                     </group>
                                 </form>

@@ -29,12 +29,11 @@ class Bid(models.Model):
     def create(self, vals):
         if vals.get('name', _('New')) == _('New'):
             vals['name'] = self.env['ir.sequence'].next_by_code('tender.bid') or _('New')
-        return super(Bid, self).create(vals)
 
-    # a function that auto-populates bid notebook
-    @api.model
-    def create(self, vals):
+        # Create the bid record
         bid = super(Bid, self).create(vals)
+
+        # Auto-populate bid_management_line_ids from tender_management_line_ids
         if bid.tender_id:
             for line in bid.tender_id.tender_management_line_ids:
                 self.env['bid.management.line'].create({
@@ -42,7 +41,7 @@ class Bid(models.Model):
                     'bid_management_id': bid.id,
                     'product_id': line.product_id.id,
                     'product_uom_id': line.product_uom_id.id,
-                    'qty': line.qty,
+                    'qty': line.qty.id,
                     'price_unit': line.price_unit,
                     'description': line.description,
                 })
