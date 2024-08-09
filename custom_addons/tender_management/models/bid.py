@@ -41,7 +41,7 @@ class Bid(models.Model):
                     'bid_management_id': bid.id,
                     'product_id': line.product_id.id,
                     'product_uom_id': line.product_uom_id.id,
-                    'qty': line.qty.id,
+                    'qty': line.qty,
                     'price_unit': line.price_unit,
                     'description': line.description,
                 })
@@ -89,9 +89,9 @@ class BidManagementLine(models.Model):
     product_quantity = fields.Many2one(
         comodel_name='uom.uom',
         string='Product Quantity',
-        store=True, readonly=False,
+        store=True, readonly=True,
     )
-    price_unit = fields.Float(string='Price', related='product_id.list_price')
+    price_unit = fields.Float(string='Price', related='product_id.list_price', readonly=False)
     qty = fields.Integer(string='Quantity', related='tender_management_line_id.qty')
     default_code = fields.Char(related='product_id.default_code', string='Code')
     description = fields.Char(string='Description')
