@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+
+<!--        using hr_timesheet security groups-->
+
+<!--        <record id="group_rocker_timesheet_user" model="res.groups">-->
+<!--            <field name="name">Rocker timesheet User</field>-->
+<!--            <field name="category_id" ref="base.module_category_services_timesheets"/>-->
+<!--            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>-->
+<!--            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>-->
+<!--        </record>-->
+
+<!--        <record id="group_rocker_timesheet_approver" model="res.groups">-->
+<!--            <field name="name">Rocker timesheet Approver</field>-->
+<!--            <field name="category_id" ref="base.module_category_services_timesheets"/>-->
+<!--            <field name="implied_ids" eval="[(4, ref('rocker_timesheet.group_rocker_timesheet_user'))]"/>-->
+<!--        </record>-->
+
+<!--        <record id="group_rocker_timesheet_manager" model="res.groups">-->
+<!--            <field name="name">Rocker timesheet Manager</field>-->
+<!--            <field name="category_id" ref="base.module_category_services_timesheets"/>-->
+<!--            <field name="implied_ids" eval="[(4, ref('rocker_timesheet.group_rocker_timesheet_approver')), (4, ref('hr.group_hr_user'))]"/>-->
+<!--            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>-->
+<!--        </record>-->
+
+<!--        <record model="ir.rule" id="rocker_task_rule">-->
+<!--            <field name="name">Rocker Project and Task hierarchy</field>-->
+<!--            <field name="model_id" ref="model_rocker_task"/>-->
+<!--            <field name="domain_force">[]</field>-->
+<!--        </record>-->
+
+    </data>
+</odoo>

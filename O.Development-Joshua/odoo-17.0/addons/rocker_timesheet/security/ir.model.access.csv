@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_rocker_timesheet_tasks,rocker.timesheet.task,model_rocker_task,hr_timesheet.group_hr_timesheet_user,1,0,0,0
+access_rocker_user_defaults,rocker.user.defaults,model_rocker_user_defaults,hr_timesheet.group_hr_timesheet_user,1,1,1,1
+access_rocker_company_defaults,rocker.company.defaults,model_rocker_company_defaults,hr_timesheet.group_timesheet_manager,1,1,1,1
+access_rocker_company_defaults_user,rocker.company.defaults.user,model_rocker_company_defaults,hr_timesheet.group_hr_timesheet_user,1,0,0,0
+access_timesheet_about_user,Rocker Timesheet About User Access model,model_rocker_timesheet_about,hr_timesheet.group_hr_timesheet_user,1,1,1,0
+access_timesheet_report_user,Rocker Hour Bank Report User Access model,model_rocker_hour_bank_report,hr_timesheet.group_hr_timesheet_user,1,0,0,0
+access_timesheet_report_manager,Rocker Hour Bank Report Manager Access model,model_rocker_hour_bank_report,hr_timesheet.group_timesheet_manager,1,1,1,1
+access_holidays_manager,Rocker Public Holidays Manager Access model,model_rocker_holidays,hr_timesheet.group_timesheet_manager,1,0,0,0
+access_holidays_staging_manager,Rocker Public Holidays Staging Manager Access model,model_rocker_holidays_staging,hr_timesheet.group_timesheet_manager,1,1,1,1
+
