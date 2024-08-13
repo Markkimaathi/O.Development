@@ -1,1 +1,0 @@
-from . import inherited_crm_lead
