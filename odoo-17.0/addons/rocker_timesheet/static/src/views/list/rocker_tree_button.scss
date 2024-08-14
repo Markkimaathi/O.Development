@@ -1,0 +1,9 @@
+.o_rocker_tree .o_content {
+    .o_rocker_tree_container {
+        height: 6rem;
+    }
+
+    .o_list_view {
+      height: calc(100% - 6rem);
+    }
+}

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_pick_bid" model="ir.actions.act_window">
+        <field name="name">pick.tender</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pick.bid</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No bids found.
+            </p>
+        </field>
+    </record>
+
+    <record id="view_pick_bid_tree" model="ir.ui.view">
+        <field name="name">tender.bid.pick.tree</field>
+        <field name="model">pick.bid</field>
+        <field name="arch" type="xml">
+            <tree string="Bids">
+                <field name="name"/>
+                <field name="tender_id"/>
+                <field name="tender_user"/>
+                <field name="bid_id"/>
+                <field name="date_created"/>
+                <field name="date_bid_to_end"/>
+                <field name="days_to_deadline"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_pick_bid_form" model="ir.ui.view">
+        <field name="name">tender.bid.pick.form</field>
+        <field name="model">pick.bid</field>
+        <field name="arch" type="xml">
+            <form string="Bids">
+                <header>
+                    <field name="state" invisible="1"/>
+                    <button name="action_accept" string="ACCEPT" type="object" invisible="state not in 'draft'"
+                            class="oe_highlight"/>
+                    <button name="action_reject" string="REJECT" type="object" invisible="state not in 'draft'"
+                            class="oe_highlight"/>
+                </header>
+                <group>
+                    <field name="name"/>
+                    <field name="tender_id"/>
+                    <field name="tender_user"/>
+                    <field name="bid_id"/>
+                    <field name="date_created"/>
+                    <field name="date_bid_to_end"/>
+                    <field name="days_to_deadline"/>
+                </group>
+
+                <notebook>
+                    <page string="Products" name="Products">
+                        <field name="pick_bid_management_line_ids">
+                            <tree string="Bid Management Line Ids" editable="bottom">
+                                <field name="product_id"/>
+                                <field name="default_code"/>
+                                <field name="description"/>
+                                <field name="qty"/>
+                                <field name="price_unit"/>
+                                <field name="product_uom_id"/>
+                                <field name="price_total"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+
+ <menuitem id="menu_pick_bid" name="Pick Bid" parent="menu_tenders_quotation_master" action="action_pick_bid"
+              sequence="21"/>
+</odoo>

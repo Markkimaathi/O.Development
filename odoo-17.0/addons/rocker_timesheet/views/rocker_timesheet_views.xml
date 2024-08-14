@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--
+            Views
+        -->
+        <record id="rocker_timesheet_search" model="ir.ui.view">
+            <field name="name">rocker_timesheet_search</field>
+            <field name="model">account.analytic.line</field>
+            <field name="arch" type="xml">
+                <search string="Timesheet">
+                    <field name="project_id"/>
+                    <field name="task_search"/>
+                    <field name="company_id"/>
+                    <separator/>
+                    <searchpanel view_types="tree,calendar">
+                        <field name="task_search" expand="1" hierarchize="1" string="Projects/Tasks"
+                               icon="fa-folder-open"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+        <record id="rocker_timesheet_tree" model="ir.ui.view">
+            <field name="name">rocker_timesheet_tree</field>
+            <field name="model">account.analytic.line</field>
+            <field name="arch" type="xml">
+                <!--                <tree string="Timesheets" editable="top" create="true" delete="true" edit="true">-->
+                <tree js_class="rocker_list" string="Timesheets" editable="top" create="true" delete="true" edit="true">
+                    <field name="project_id" required="1" options="{'no_create_edit': True}"/>
+                    <field name="task_id" required="1"/>
+                    <field name="name" string="Comments"/>
+                    <field name="display_name" readonly="1" column_invisible="1"/>
+                    <field name="date" required="1" readonly="1"/>
+                    <field name="unit_amount" widget="float_time" type="measure"/>
+                    <field name="start" required="1"/>
+                    <field name="stop" required="1"/>
+                    <field name="duration" required="1" widget="float_time" type="measure"/>
+                    <field name="employee_id" readonly="1" optional="show"/>
+                    <field name="department_id" readonly="1" optional="show"/>
+                    <field name="company_id" required="1" readonly="1" optional="show"/>
+                    <field name="user_id" column_invisible="1" required="1" readonly="1"/>
+                    <field name="allday" column_invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_open_project_edit_form" model="ir.actions.server">
+            <field name="name">Edit Project</field>
+            <field name="model_id" ref="rocker_timesheet.model_project_project"/>
+            <field name="state">code</field>
+            <field name="code">action = model.open_project_edit_form()</field>
+        </record>
+
+        <record id="rocker_project_tree" model="ir.ui.view">
+            <field name="name">Edit Project types</field>
+            <field name="model">project.project</field>
+            <field name="arch" type="xml">
+                <tree editable="top" create="false" delete="false" import="false" string="Projects">
+                    <button type="action" string="Open" name="rocker_timesheet.action_open_project_edit_form"
+                            icon="fa-folder-open-o" class="oe_highlight"/>
+                    <field name="name" readonly="1"/>
+                    <field name="rocker_type" readonly="0"/>
+                    <field name="allow_timesheets" readonly="0"/>
+                    <field name="privacy_visibility" readonly="0"/>
+                    <field name="user_id" readonly="1"/>
+                    <field name="company_id" readonly="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="rocker_edit_project" model="ir.ui.view">
+            <field name="name">rocker.project.edit.form</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='tag_ids']" position="after">
+                    <label for="rocker_type" string="Project type"/>
+                    <div>
+                        <field name="rocker_type"/>
+                    </div>
+                    <div></div>
+                    <div class="text-muted">
+                        Type of a project, Used in Rocker Timesheets (filter Projects and Tasks)
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="rocker_project_task_tree" model="ir.ui.view">
+            <field name="name">Tasks</field>
+            <field name="model">rocker.task</field>
+            <field name="arch" type="xml">
+                <tree string="Projects and Tasks" create="false" delete="false" edit="false">
+                    <field name="project_id" readonly="1"/>
+                    <field name="task_id" readonly="1"/>
+                    <field name="parent_id" readonly="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="rocker_timesheet_form" model="ir.ui.view">
+            <field name="name">rocker_timesheet_form</field>
+            <field name="model">account.analytic.line</field>
+            <field name="priority" eval="3"/>
+            <field name="arch" type="xml">
+                <form string="Timesheet">
+                    <sheet>
+                        <div class="oe_title">
+                            <div class="oe_edit_only">
+                                <label for="name"/>
+                            </div>
+                            <h1>
+                                <field name="name" placeholder="e.g. Odoo programming" class="font-weight-bold"/>
+                            </h1>
+                        </div>
+                        <label for="company_id" string="for Company: "/>
+                        <field name="company_id" required="1" readonly="1"/>
+                        <notebook>
+                            <page name="page_details" string="Details">
+                                <group>
+                                    <group>
+                                        <field name="start" string="From" readonly="0" required="1"/>
+                                        <field name="stop" string="To" readonly="0" required="1"/>
+                                        <field name="daystocreateshow" string="Generate Timesheet rows " readonly="1"/>
+                                        <field name="duration" invisible="1" widget="float_time" string="Duration"
+                                               class="oe_inline" required="1" readonly="0"/>
+                                        <field name="allday" invisible="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="project_id" required="1"
+                                               domain="[('company_id', '=', company_id)]"/>
+                                        <field name="task_id" required="1"
+                                               domain="[('project_id', '=', project_id)]"/>
+                                        <label for="unit_amount" string="Actual Work" invisible="0"/>
+                                        <div>
+                                            <field name="unit_amount" required="1" widget="float_time" class="oe_inline"
+                                                   readonly="0"/>
+                                            <span>hours per day</span>
+                                        </div>
+                                        <field name="date" invisible="1" required="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="rocker_timesheet_calendar" model="ir.ui.view">
+            <field name="name">rocker_timesheet_calendar</field>
+            <field name="model">account.analytic.line</field>
+            <field name="priority" eval="1"/>
+            <field name="arch" type="xml">
+                <!--                <calendar string="Timesheets"-->
+                <calendar js_class="rocker_calendar" string="Timesheets"
+                          form_view_id="%(rocker_timesheet.rocker_timesheet_form)d"
+                          event_limit="1"
+                          date_start="start"
+                          date_stop="stop"
+                          date_delay="duration"
+                          all_day="allday"
+                          color="rocker_type"
+                          mode="month"
+                          event_open_popup="true"
+                          show_unusual_days="true"
+                          quick_create="false"
+                          hide_time="false">
+                    <!--                          quick_add="false">-->
+                    <field name="display_name"/>
+                    <field name="project_id" required="1"/>
+                    <field name="task_id" required="1"/>
+                    <field name="unit_amount" required="1"/>
+                    <field name="company_id" required="1" readonly="1"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record id="rocker_company_view_form_simplified" model="ir.ui.view">
+            <field name="name">rocker.company.view.form.simplified</field>
+            <field name="model">rocker.company.defaults</field>
+            <field name="arch" type="xml">
+                <form string="Company" save="true" discard="false" create="false" delete="false">
+                    <div class="oe_title">
+                        <h1>
+                            <field name="company_name" readonly="1" class="font-weight-bold"/>
+                        </h1>
+                    </div>
+                    <hr></hr>
+                    <div>
+                        <h3>Timesheet Settings</h3>
+                    </div>
+                    <group col="2" style="white-space:nowrap;">
+                        <field name="company_id" invisible="1" readonly="1"/>
+                        <field name="rocker_default_start" required="1" widget="float_time" invisible="0"/>
+                        <field name="rocker_default_stop" required="1" widget="float_time" invisible="0"/>
+                        <field name="rocker_default_startToShow" required="1" widget="float_time" style="width: 30%%"/>
+                        <field name="rocker_default_stopToShow" required="1" widget="float_time" style="width: 30%%"/>
+                        <field name="rocker_default_work" required="1" widget="float_time" style="width: 30%%"/>
+                        <field name="rocker_default_rolling_work" required="1" widget="float_time" style="width: 30%%"/>
+                        <field name="rocker_round_up" required="1" style="width: 30%%"/>
+                    </group>
+                    <div class="row">
+                        <div class="text-muted col-md-12">
+                            Start and Stop are stored in UTC timezone into database.
+                            <br></br>
+                            Work can be different than Duration (Stop - Start) (- lunch hours etc.)
+                        </div>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="rocker_user_view_form_simplified" model="ir.ui.view">
+            <field name="name">rocker.user.view.form.simplified</field>
+            <field name="model">rocker.user.defaults</field>
+            <field name="arch" type="xml">
+                <form string="User defaults" save="true" discard="true" create="false" delete="true">
+                    <group>
+                        <group>
+                            <field name="user_id" readonly="1" invisible="1"/>
+                            <h2>
+                                <field name="user_name" readonly="1" class="font-weight-bold"/>
+                            </h2>
+                        </group>
+                        <group col="6" colspan="4">
+                            <group colspan="2">
+                                <field name="company_id" string="Company" required="1" invisible="0" readonly="1"/>
+                            </group>
+                            <group colspan="2">
+                                <field name="department_id" string="Department" invisible="0" readonly="1"/>
+                            </group>
+                            <group colspan="2">
+                                <field name="employee_id" string="Employee" invisible="0" readonly="1"/>
+                            </group>
+                        </group>
+                        <newline/>
+                        <group string="Timesheet defaults" style="white-space:nowrap;">
+                            <field name="rocker_default_start" required="1" widget="float_time" invisible="0"/>
+                            <field name="rocker_default_stop" required="1" widget="float_time" invisible="0"/>
+                            <field name="rocker_default_startToShow" required="1" widget="float_time"/>
+                            <field name="rocker_default_stopToShow" required="1" widget="float_time"/>
+                            <field name="rocker_default_work" required="1" widget="float_time"/>
+                            <field name="rocker_default_rolling_work" required="1" widget="float_time"/>
+                            <field name="rocker_round_up" required="1"/>
+                        </group>
+                        <group string="Hourbank defaults" style="white-space:nowrap;">
+                            <field name="hourbank_calculation_start" required="0"/>
+                            <field name="hourbank_initial_saldo" required="0" widget="float_time"/>
+                            <div class="row" colspan="2">
+                                <div class="text-muted col-md-12">
+                                    <span>Calculation Start Date must be >= first timesheet row.
+                                        <br></br>
+                                    </span>
+                                    <span>Otherwise it is ignored!</span>
+                                </div>
+                            </div>
+                        </group>
+                        <div class="row" colspan="4">
+                            <div class="text-muted col-md-12">
+                                Start and Stop are stored in UTC timezone into database.
+                                <br></br>
+                                Work can be different than Duration (Stop - Start) (- lunch hours etc.)
+                                <br></br>
+                                If Start and Stop values not found, Company defaults are used.
+                            </div>
+                        </div>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!--
+            Actions
+        -->
+
+        <record id="act_rocker_timesheet_tree" model="ir.actions.act_window">
+            <field name="name">Timesheets</field>
+            <field name="res_model">account.analytic.line</field>
+            <field name="domain">[('user_id', '=', uid)]</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="rocker_timesheet_tree"/>
+            <field name="search_view_id" ref="rocker_timesheet_search"/>
+            <field name="target">main</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No timesheets found. Let's start a new one!
+                </p>
+                <p>
+                    Track your working hours by projects every day.
+                </p>
+            </field>
+        </record>
+
+        <record id="act_rocker_project" model="ir.actions.act_window">
+            <field name="name">Edit project types</field>
+            <field name="res_model">project.project</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="rocker_project_tree"/>
+            <field name="target">main</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No projects found.
+                </p>
+                <p>
+                    Track your projects every day.
+                </p>
+            </field>
+        </record>
+
+        <record id="act_rocker_project_task" model="ir.actions.act_window">
+            <field name="name">Tasks</field>
+            <field name="res_model">rocker.task</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="rocker_project_task_tree"/>
+            <field name="target">main</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No projects found.
+                </p>
+                <p>
+                    Track your projects every day.
+                </p>
+            </field>
+        </record>
+
+        <record id="act_rocker_timesheet_calendar" model="ir.actions.act_window">
+            <field name="name">Timesheets_calendar</field>
+            <field name="res_model">account.analytic.line</field>
+            <field name="view_mode">calendar,tree,form</field>
+            <field name="view_id" ref="rocker_timesheet_calendar"/>
+            <field name="search_view_id" ref="rocker_timesheet_search"/>
+            <field name="target">main</field>
+            <field name="domain">[('user_id', '=', uid)]</field>
+            <field name="context"></field>
+        </record>
+
+        <record id="act_rocker_timesheet_company" model="ir.actions.server">
+            <field name="name">Edit Company defaults</field>
+            <field name="model_id" ref="rocker_timesheet.model_rocker_company_defaults"/>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="code">action = model.edit_rocker_company_defaults()</field>
+        </record>
+
+        <record id="act_rocker_timesheet_user" model="ir.actions.server">
+            <field name="name">Edit User defaults</field>
+            <field name="model_id" ref="rocker_timesheet.model_rocker_user_defaults"/>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="code">action = model.edit_rocker_user_defaults()</field>
+        </record>
+
+        <record id="action_view_rocker_timesheet_calendar" model="ir.actions.act_window.view">
+            <field name="act_window_id" ref="act_rocker_timesheet_calendar"/>
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">calendar</field>
+            <field name="view_id" ref="rocker_timesheet_calendar"/>
+        </record>
+
+        <record id="action_view_rocker_timesheet_calendar_tree" model="ir.actions.act_window.view">
+            <field name="act_window_id" ref="act_rocker_timesheet_calendar"/>
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="rocker_timesheet_tree"/>
+        </record>
+
+        <record id="action_view_rocker_timesheet_calendar_form" model="ir.actions.act_window.view">
+            <field name="act_window_id" ref="act_rocker_timesheet_calendar"/>
+            <field name="sequence" eval="3"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="rocker_timesheet_form"/>
+        </record>
+
+        <record id="action_rocker_about_timesheet" model="ir.actions.server">
+            <field name="name">Show About</field>
+            <field name="model_id" ref="model_rocker_timesheet_about"/>
+            <field name="state">code</field>
+            <field name="code">action = model._show_about()</field>
+        </record>
+
+        <record id="action_searchpanel_all_tasks" model="ir.actions.server">
+            <field name="name">Search Panel All Tasks</field>
+            <field name="model_id" ref="rocker_timesheet.model_account_analytic_line"/>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="code">action = model.searchpanel_all('all')</field>
+        </record>
+        <record id="action_searchpanel_member_tasks" model="ir.actions.server">
+            <field name="name">Search Panel Member Tasks</field>
+            <field name="model_id" ref="rocker_timesheet.model_account_analytic_line"/>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="code">action = model.searchpanel_all('member')</field>
+        </record>
+        <record id="action_searchpanel_billable_tasks" model="ir.actions.server">
+            <field name="name">Search Panel Billable Tasks</field>
+            <field name="model_id" ref="rocker_timesheet.model_account_analytic_line"/>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="code">action = model.searchpanel_all('billable')</field>
+        </record>
+        <record id="action_searchpanel_nonbillable_tasks" model="ir.actions.server">
+            <field name="name">Search Panel Non Billable Tasks</field>
+            <field name="model_id" ref="rocker_timesheet.model_account_analytic_line"/>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="code">action = model.searchpanel_all('nonbillable')</field>
+        </record>
+        <record id="action_searchpanel_internal_tasks" model="ir.actions.server">
+            <field name="name">Search Panel Internal Tasks</field>
+            <field name="model_id" ref="rocker_timesheet.model_account_analytic_line"/>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="code">action = model.searchpanel_all('internal')</field>
+        </record>
+        <record id="action_searchpanel_mine_tasks" model="ir.actions.server">
+            <field name="name">Search Panel My Tasks</field>
+            <field name="model_id" ref="rocker_timesheet.model_account_analytic_line"/>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="code">action = model.searchpanel_all('mine')</field>
+        </record>
+
+        <record id="action_create_rolling" model="ir.actions.server">
+            <field name="name">Create Rolling Timesheet row</field>
+            <field name="model_id" ref="rocker_timesheet.model_account_analytic_line"/>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="code">action = model.create_rolling()</field>
+        </record>
+
+
+        <!--
+           Menus
+       -->
+        <!--                <menuitem id="rocker_timesheet_menu_root"-->
+        <!--                  name="Rocker Timesheets"-->
+        <!--                  sequence="5"-->
+        <!--                  web_icon="rocker_timesheet,static/description/icon_timesheet.png"/>-->
+        <!--                  groups="group_rocker_timesheet_user"-->
+
+        <menuitem id="rocker_timesheet_menu_timesheet"
+                  name="Rocker"
+                  parent="hr_timesheet.timesheet_menu_root"
+                  sequence="3"
+                  groups="hr_timesheet.group_hr_timesheet_user"
+        />
+        <!--                  parent="rocker_timesheet_menu_root"-->
+
+        <menuitem id="timesheet_menu_calendar"
+                  name="Dashboard"
+                  parent="rocker_timesheet_menu_timesheet"
+                  action="act_rocker_timesheet_calendar"
+                  sequence="6"
+                  groups="hr_timesheet.group_hr_timesheet_user"
+        />
+
+        <menuitem id="rocker_timesheet_menu_settings"
+                  name="Settings"
+                  parent="rocker_timesheet_menu_timesheet"
+                  sequence="7"
+                  groups="hr_timesheet.group_hr_timesheet_user"/>
+
+        <menuitem id="timesheet_menu_company"
+                  name="Company defaults"
+                  parent="rocker_timesheet_menu_settings"
+                  action="act_rocker_timesheet_company"
+                  sequence="71"
+                  groups="hr_timesheet.group_timesheet_manager"/>
+
+        <menuitem id="timesheet_menu_user"
+                  name="User defaults"
+                  parent="rocker_timesheet_menu_settings"
+                  action="act_rocker_timesheet_user"
+                  sequence="72"
+                  groups="hr_timesheet.group_hr_timesheet_user"/>
+
+        <menuitem id="menu_rocker_timesheet_about"
+                  name="About"
+                  parent="rocker_timesheet_menu_timesheet"
+                  sequence="90"
+                  groups="hr_timesheet.group_hr_timesheet_user"/>
+
+        <menuitem id="menu_rocker_timesheet_about_show"
+                  name="Rocker Timesheet..."
+                  action="action_rocker_about_timesheet"
+                  parent="menu_rocker_timesheet_about"
+                  sequence="1"
+                  groups="hr_timesheet.group_hr_timesheet_user"/>
+
+        <menuitem id="rocker_timesheet_menu_project_task"
+                  name="Project settings"
+                  parent="rocker_timesheet_menu_timesheet"
+                  sequence="8"
+                  groups="hr_timesheet.group_timesheet_manager"/>
+
+        <menuitem id="rocker_timesheet_menu_projects"
+                  name="Edit Project types"
+                  parent="rocker_timesheet_menu_project_task"
+                  action="act_rocker_project"
+                  sequence="1"
+                  groups="hr_timesheet.group_timesheet_manager"/>
+
+    </data>
+</odoo>
